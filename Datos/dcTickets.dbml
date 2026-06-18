@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Tickets2" Class="dcTicketsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=GABIRASQL;Initial Catalog=Tickets2;User ID=sa;Trust Server Certificate=True" SettingsObjectName="Datos.Properties.Settings" SettingsPropertyName="Tickets2ConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Administrador" Member="Administrador">
+    <Type Name="Administrador">
+      <Column Name="adm_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="per_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Persona_Administrador" Member="Persona" ThisKey="per_ID" OtherKey="per_ID" Type="Persona" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ServicioEstado" Member="ServicioEstado">
+    <Type Name="ServicioEstado">
+      <Column Name="sere_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sere_Clave" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="sere_Descripcion" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="ServicioEstado_Servicio" Member="Servicio" ThisKey="sere_ID" OtherKey="sere_ID" Type="Servicio" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Trabajador" Member="Trabajador">
+    <Type Name="Trabajador">
+      <Column Name="tra_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="per_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Persona_Trabajador" Member="Persona" ThisKey="per_ID" OtherKey="per_ID" Type="Persona" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuario" Member="Usuario">
+    <Type Name="Usuario">
+      <Column Name="usu_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="usu_Usuario" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="usu_Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="per_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Persona_Usuario" Member="Persona" ThisKey="per_ID" OtherKey="per_ID" Type="Persona" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Departamento" Member="Departamento">
+    <Type Name="Departamento">
+      <Column Name="dep_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="dep_Departamento" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="dep_AtiendeServicios" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Departamento_Persona" Member="Persona" ThisKey="dep_ID" OtherKey="dep_ID" Type="Persona" />
+      <Association Name="Departamento_Servicio" Member="Servicio" ThisKey="dep_ID" OtherKey="ser_DeptoQueAtiende" Type="Servicio" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comentario" Member="Comentario">
+    <Type Name="Comentario">
+      <Column Name="com_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ser_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="com_Comentario" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="com_FechaCom" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="per_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Persona_Comentario" Member="Persona" ThisKey="per_ID" OtherKey="per_ID" Type="Persona" IsForeignKey="true" />
+      <Association Name="Servicio_Comentario" Member="Servicio" ThisKey="ser_ID" OtherKey="ser_ID" Type="Servicio" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Persona" Member="Persona">
+    <Type Name="Persona">
+      <Column Name="per_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="per_Nombre" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="per_ApePat" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="per_ApeMat" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="per_Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="per_ExtTelefono" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="dep_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="per_IsActivo" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="per_copia" Type="System.String" DbType="VarChar(350) NULL" CanBeNull="false" />
+      <Association Name="Persona_Administrador" Member="Administrador" ThisKey="per_ID" OtherKey="per_ID" Type="Administrador" />
+      <Association Name="Persona_Trabajador" Member="Trabajador" ThisKey="per_ID" OtherKey="per_ID" Type="Trabajador" />
+      <Association Name="Persona_Usuario" Member="Usuario" ThisKey="per_ID" OtherKey="per_ID" Type="Usuario" />
+      <Association Name="Persona_Comentario" Member="Comentario" ThisKey="per_ID" OtherKey="per_ID" Type="Comentario" />
+      <Association Name="Persona_Servicio" Member="Servicio" ThisKey="per_ID" OtherKey="per_ID_Levanto" Type="Servicio" />
+      <Association Name="Persona_Servicio1" Member="Servicio1" ThisKey="per_ID" OtherKey="per_ID_Atiende" Type="Servicio" />
+      <Association Name="Departamento_Persona" Member="Departamento" ThisKey="dep_ID" OtherKey="dep_ID" Type="Departamento" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Servicio" Member="Servicio">
+    <Type Name="Servicio">
+      <Column Name="ser_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="sere_ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="per_ID_Levanto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="per_ID_Atiende" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ser_Incidente" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="ser_FechaIngreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ser_FechaUltimoE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ser_DeptoQueAtiende" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ser_Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ser_Equipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ser_Nombre_Atiende" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ser_Num_Fotos" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ser_FechaEstimadaFin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Servicio_Comentario" Member="Comentario" ThisKey="ser_ID" OtherKey="ser_ID" Type="Comentario" />
+      <Association Name="Departamento_Servicio" Member="Departamento" ThisKey="ser_DeptoQueAtiende" OtherKey="dep_ID" Type="Departamento" IsForeignKey="true" />
+      <Association Name="Persona_Servicio" Member="Persona" ThisKey="per_ID_Levanto" OtherKey="per_ID" Type="Persona" IsForeignKey="true" />
+      <Association Name="Persona_Servicio1" Member="Persona1" ThisKey="per_ID_Atiende" OtherKey="per_ID" Type="Persona" IsForeignKey="true" />
+      <Association Name="ServicioEstado_Servicio" Member="ServicioEstado" ThisKey="sere_ID" OtherKey="sere_ID" Type="ServicioEstado" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.sp_Get_ServiciosSolicitados" Method="sp_Get_ServiciosSolicitados">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosSolicitadosResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="[Asignado A]" Member="Asignado_A" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Equipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosAsignados" Method="sp_Get_ServiciosAsignados">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosAsignadosResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Equipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="[Asignado A]" Member="Asignado_A" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Responsable" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fecha_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Estimada_Fin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Ultimo_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosFinalizados" Method="sp_Get_ServiciosFinalizados">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosFinalizadosResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Usuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="[Asignado A]" Member="Asignado_A" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Estimada_Fin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[Fecha de último Estado]" Member="Fecha_de_último_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Duración" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosAsignadosM" Method="sp_Get_ServiciosAsignadosM">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosAsignadosMResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Equipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Responsable" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fecha_Estimada_Fin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Fecha_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Ultimo_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosSolicitadosM" Method="sp_Get_ServiciosSolicitadosM">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosSolicitadosMResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Responsable" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Equipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosFinalizadosM" Method="sp_Get_ServiciosFinalizadosM">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosFinalizadosMResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Usuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Area" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Equipo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Responsable" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Estimada_Fin" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Duración" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

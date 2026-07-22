@@ -26,56 +26,56 @@ namespace Tickets2
         {
             dcDatos = new dcTicketsDataContext();
 
-                if (Session["objAdmin"] != null)
+            if (Session["objAdmin"] != null)
+            {
+                objAdmin = (Usuario)Session["objAdmin"];
+
+                if (!IsPostBack)
                 {
-                    objAdmin = (Usuario)Session["objAdmin"];
+                    //----------------------------------------------------------------------------------
+                    //                  CARGAR COMBO DEL ID DEL DEPARTAMENTO 
+                    //----------------------------------------------------------------------------------
+                    var consultaDeptoID = from d in dcDatos.Departamento
+                                          select new
+                                          {
+                                              Id = d.dep_ID,
+                                              Departamentos = d.dep_Departamento
+                                          };
+                    cmbDepto.DataSource = consultaDeptoID.ToList();
+                    cmbDepto.DataValueField = "Id";
+                    cmbDepto.DataTextField = "Departamentos";
+                    cmbDepto.DataBind();
 
-                    if (!IsPostBack)
-                    {
-                        //----------------------------------------------------------------------------------
-                        //                  CARGAR COMBO DEL ID DEL DEPARTAMENTO 
-                        //----------------------------------------------------------------------------------
-                        var consultaDeptoID = from d in dcDatos.Departamento
-                                              select new
-                                              {
-                                                  Id = d.dep_ID,
-                                                  Departamentos = d.dep_Departamento
-                                              };
-                        cmbDepto.DataSource = consultaDeptoID.ToList();
-                        cmbDepto.DataValueField = "Id";
-                        cmbDepto.DataTextField = "Departamentos";
-                        cmbDepto.DataBind();
+                    if (cmbDepto.Items.Count > 0)
+                        cmbDepto.SelectedIndex = -1;
 
-                        if (cmbDepto.Items.Count > 0)
-                            cmbDepto.SelectedIndex = -1;
+                    //--------------------------------------------------------------------------------
+                    //                  CARGAR COMBO DEL ID DEL ENCARGADO DE ATENDER EL  SERVICIO
+                    //---------------------------------------------------------------------------------
 
-                        //--------------------------------------------------------------------------------
-                        //                  CARGAR COMBO DEL ID DEL ENCARGADO DE ATENDER EL  SERVICIO
-                        //---------------------------------------------------------------------------------
+                    var consultaAsignarRespon = from d in dcDatos.Persona
+                                                where d.dep_ID == 1 && d.per_IsActivo == true
+                                                select new
+                                                {
+                                                    Nombre = d.per_Nombre + " " + d.per_ApePat
+                                                };
+                    cmbResponsableServicioSis.DataSource = consultaAsignarRespon.ToList();
+                    cmbResponsableServicioSis.DataValueField = "Nombre";
+                    cmbResponsableServicioSis.DataTextField = "Nombre";
+                    cmbResponsableServicioSis.DataBind();
 
-                        var consultaAsignarRespon = from d in dcDatos.Persona
-                                                    where d.dep_ID == 1 && d.per_IsActivo == true
-                                                    select new
-                                                    {
-                                                        Nombre = d.per_Nombre + " " + d.per_ApePat
-                                                    };
-                        cmbResponsableServicioSis.DataSource = consultaAsignarRespon.ToList();
-                        cmbResponsableServicioSis.DataValueField = "Nombre";
-                        cmbResponsableServicioSis.DataTextField = "Nombre";
-                        cmbResponsableServicioSis.DataBind();
+                    if (cmbResponsableServicioSis.Items.Count > 0)
+                        cmbResponsableServicioSis.SelectedIndex = -1;
 
-                        if (cmbResponsableServicioSis.Items.Count > 0)
-                            cmbResponsableServicioSis.SelectedIndex = -1;
-
-                        //-------------------------------------------------------------------
-                        //-----------CARGAR GRIDS--------------------------------------
-                        CargarGridSistemas();
-                    }
+                    //-------------------------------------------------------------------
+                    //-----------CARGAR GRIDS--------------------------------------
+                    CargarGridSistemas();
                 }
-                else
-                {
-                    Response.Redirect("PaginaLogin.aspx");
-                }  
+            }
+            else
+            {
+                Response.Redirect("PaginaLogin.aspx");
+            }
         }
 
         protected void btnSalir_Click(object sender, EventArgs e)
@@ -96,7 +96,7 @@ namespace Tickets2
                     txtNombre.Focus();
                     return;
                 }
-                else if(string.IsNullOrEmpty(txtApellidoP.Text))
+                else if (string.IsNullOrEmpty(txtApellidoP.Text))
                 {
                     MessageBox.Show("Capture el apellido paterno de la persona.");
                     txtApellidoP.Focus();
@@ -185,11 +185,11 @@ namespace Tickets2
                 {
                     Trabajador objTrab = new Trabajador();
                     var consultaNewTrabajador = from row in dcDatos.Trabajador
-                                             group row by true into s
-                                             select new
-                                             {
-                                                 newID = s.Max(id => id.tra_ID)
-                                             };
+                                                group row by true into s
+                                                select new
+                                                {
+                                                    newID = s.Max(id => id.tra_ID)
+                                                };
                     if (consultaNewTrabajador.First() != null)
                         objTrab.tra_ID = consultaNewTrabajador.First().newID + 1;
                     else
@@ -203,11 +203,11 @@ namespace Tickets2
                 {
                     Administrador objAdministrador = new Administrador();
                     var consultaNewAdministrador = from row in dcDatos.Administrador
-                                                group row by true into s
-                                                select new
-                                                {
-                                                    newID = s.Max(id => id.adm_ID)
-                                                };
+                                                   group row by true into s
+                                                   select new
+                                                   {
+                                                       newID = s.Max(id => id.adm_ID)
+                                                   };
                     if (consultaNewAdministrador.First() != null)
                         objAdministrador.adm_ID = consultaNewAdministrador.First().newID + 1;
                     else
@@ -420,7 +420,7 @@ namespace Tickets2
                     objSer.ser_Nombre_Atiende = cmbResponsableServicioSis.SelectedValue;
                     objSer.ser_FechaUltimoE = DateTime.Now;
                     objSer.sere_ID = (int)enumServicioEstado.Abierto;
-                    objSer.ser_FechaEstimadaFin = Convert.ToDateTime(fecha[1] + "/" +fecha[0] + "/" + fecha[2]);
+                    objSer.ser_FechaEstimadaFin = Convert.ToDateTime(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
                     dcDatos.SubmitChanges();
                     //Actualizar grid
                     CargarGridSistemas();
@@ -449,6 +449,168 @@ namespace Tickets2
                 MessageBox.Show("Ocurrio el siguiente error: " + ex.Message
                                  + "\n" + "Consulte con el administrador del sistema.");
             }
+            //limpiar caja
+            txtIdServicioResponsableSis.Text = "";
+            cmbResponsableServicioSis.SelectedIndex = -1;
+        }
+
+        protected void btnAsignarServicioSis_ClickOG(object sender, EventArgs e)
+        {
+            #region Validar cajas
+            if (string.IsNullOrEmpty(txtIdServicioResponsableSis.Text))
+            {
+                MessageBox.Show("Ingrese el Id del servicio a por asignar.");
+                //limpiar caja
+                txtIdServicioResponsableSis.Text = "";
+                txtIdServicioResponsableSis.Focus();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(datetimepicker4.Text))
+            {
+                MessageBox.Show("Ingrese fecha estimada de fin de servicio");
+                //limpiar caja
+                datetimepicker4.Text = "";
+                datetimepicker4.Focus();
+                return;
+            }
+
+            int ID_Servicio_Responsable;
+            if (!int.TryParse(txtIdServicioResponsableSis.Text, out ID_Servicio_Responsable))
+            {
+                MessageBox.Show("Ingrese un numero entero en el Id del servicio por asignar");
+                //limpiar caja
+                txtIdServicioResponsableSis.Text = "";
+                txtIdServicioResponsableSis.Focus();
+                return;
+            }
+            if (cmbResponsableServicioSis.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione un responsable del servicio.");
+                cmbResponsableServicioSis.Focus();
+                return;
+            }
+            //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
+            //TENGA ESTATUS 2 (ASIGNADO)
+            Servicio objSerValida = (from s in dcDatos.Servicio
+                                     where s.ser_ID == ID_Servicio_Responsable
+                                     select s).SingleOrDefault();
+            if (objSerValida != null)
+            {
+                if (objSerValida.sere_ID != (int)enumServicioEstado.Solicitado)
+                {
+                    MessageBox.Show("El servicio " + ID_Servicio_Responsable.ToString()
+                        + " no tiene el estatus: Solicitado. Por lo que no se puede asignar un responsable al servicio.");
+                    //llimpiar caja
+                    txtIdServicioResponsableSis.Text = "";
+                    txtIdServicioResponsableSis.Focus();
+                    return;
+                }
+            }
+            else
+            {
+                MessageBox.Show("No existe el servicio.");
+                return;
+            }
+            if (objSerValida.ser_DeptoQueAtiende != objAdmin.Persona.dep_ID)
+            {
+                MessageBox.Show("El servicio " + ID_Servicio_Responsable.ToString()
+                    + " no es uno de tus servicios solicitados.");
+                txtIdServicioResponsableSis.Text = "";
+                return;
+            }
+            #endregion
+
+            try
+            {
+                // CORRECCIÓN: Reutilizar el objeto ya consultado en lugar de hacer otra query
+                Servicio objSer = objSerValida;
+
+                if (objSer != null)
+                {
+                    // CORRECCIÓN: Manejar fecha con hora incluida
+                    DateTime fechaEstimadaFin;
+                    string formatoFecha = datetimepicker4.Text.Trim();
+
+                    // Extraer solo la parte de la fecha (antes del espacio si hay hora)
+                    string soloFecha = formatoFecha;
+                    if (formatoFecha.Contains(" "))
+                    {
+                        soloFecha = formatoFecha.Split(' ')[0]; // Toma solo "17/07/2026"
+                    }
+
+                    // Intentar convertir con diferentes formatos comunes
+                    // Formato: dd/MM/yyyy (ej: 17/07/2026)
+                    if (!DateTime.TryParseExact(soloFecha, "dd/MM/yyyy",
+                        System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None, out fechaEstimadaFin))
+                    {
+                        // Formato: dd-MM-yyyy (ej: 17-07-2026)
+                        if (!DateTime.TryParseExact(soloFecha, "dd-MM-yyyy",
+                            System.Globalization.CultureInfo.InvariantCulture,
+                            System.Globalization.DateTimeStyles.None, out fechaEstimadaFin))
+                        {
+                            // Formato: yyyy-MM-dd (ej: 2026-07-17)
+                            if (!DateTime.TryParseExact(soloFecha, "yyyy-MM-dd",
+                                System.Globalization.CultureInfo.InvariantCulture,
+                                System.Globalization.DateTimeStyles.None, out fechaEstimadaFin))
+                            {
+                                // Formato: d/M/yyyy (ej: 7/7/2026 - sin ceros)
+                                if (!DateTime.TryParseExact(soloFecha, "d/M/yyyy",
+                                    System.Globalization.CultureInfo.InvariantCulture,
+                                    System.Globalization.DateTimeStyles.None, out fechaEstimadaFin))
+                                {
+                                    // Intentar conversión general como último recurso
+                                    if (!DateTime.TryParse(formatoFecha, out fechaEstimadaFin))
+                                    {
+                                        MessageBox.Show("La fecha ingresada no es válida.\n" +
+                                            "Formatos aceptados: dd/MM/yyyy, dd-MM-yyyy, yyyy-MM-dd\n" +
+                                            "Ejemplo: 17/07/2026\n" +
+                                            "Fecha ingresada: " + formatoFecha);
+                                        datetimepicker4.Text = "";
+                                        datetimepicker4.Focus();
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    objSer.ser_Nombre_Atiende = cmbResponsableServicioSis.SelectedValue;
+                    objSer.ser_FechaUltimoE = DateTime.Now;
+                    objSer.sere_ID = (int)enumServicioEstado.Abierto;
+                    objSer.ser_FechaEstimadaFin = fechaEstimadaFin;
+
+                    dcDatos.SubmitChanges();
+
+                    //Actualizar grid
+                    CargarGridSistemas();
+                    EnviarCorreoAsignacion();
+                    MessageBox.Show("Servicio asignado correctamente a un responsable");
+                }
+                else
+                    MessageBox.Show("No se pudo obtener el servicio con ID " + ID_Servicio_Responsable.ToString());
+            }
+            catch (ChangeConflictException)
+            {
+                foreach (ObjectChangeConflict occ in dcDatos.ChangeConflicts)
+                {
+                    // All database values overwrite current values.
+                    occ.Resolve(RefreshMode.OverwriteCurrentValues);
+                    MessageBox.Show("Servicio modificado por otro usuario");
+                }
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show("Error de SQL: " + ex.Message
+                                + "\n" + "Consulte con el administrador del sistema.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrio el siguiente error: " + ex.Message
+                                 + "\n" + "Consulte con el administrador del sistema.");
+            }
+
             //limpiar caja
             txtIdServicioResponsableSis.Text = "";
             cmbResponsableServicioSis.SelectedIndex = -1;
@@ -533,10 +695,11 @@ namespace Tickets2
                     else
                         objComen.com_ID = 1;
                 }
-                catch {
+                catch
+                {
                     objComen.com_ID = 1;
                 }
-                
+
 
                 objComen.ser_ID = ID_Servicio_Comentario;
                 objComen.com_Comentario = txtComentarioSis.Text;
@@ -597,7 +760,7 @@ namespace Tickets2
             dgFinalizadosxis.PageIndex = e.NewPageIndex;
             dgFinalizadosxis.DataSource = consulta3;
             dgFinalizadosxis.DataBind();
-        }    
+        }
 
         protected void btnfotofin_Click(object sender, EventArgs e)
         {
@@ -703,7 +866,7 @@ namespace Tickets2
                 else
                     MessageBox.Show("Error");
 
-                
+
 
                 for (int i = 0; i < uploadedFiles.Count; i++)
                 {
@@ -763,14 +926,14 @@ namespace Tickets2
         }
 
 
-        public void EnviarCorreoAsignacion()
+        public void EnviarCorreoAsignacionLEGACY()
         {
             string mensaje = "";
             string correodestino = "";
             var consulta = from u in dcDatos.Servicio
                            join p in dcDatos.Persona
-                           on new { u.per_ID_Levanto} equals
-                           new { per_ID_Levanto = p.per_ID} into sr
+                           on new { u.per_ID_Levanto } equals
+                           new { per_ID_Levanto = p.per_ID } into sr
                            from x in sr.DefaultIfEmpty()
                            where u.ser_ID == Convert.ToInt32(txtIdServicioResponsableSis.Text)
                            select new
@@ -833,21 +996,21 @@ namespace Tickets2
                 }
             }
 
-            
-            
+
+
             message.To.Add(correodestino);
             message.Subject = "Sistema de Tickets - Asignacion";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
             var correodes = from d in dcDatos.Persona
-                         where d.dep_ID == 1 && d.per_IsActivo == true 
-                         select new
-                         {
-                             correo = d.per_Email 
-                         };
+                            where d.dep_ID == 1 && d.per_IsActivo == true
+                            select new
+                            {
+                                correo = d.per_Email
+                            };
             if (correodes.Count() > 0)
-              foreach (var i in correodes)
-                   //message.CC.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, aescamilla@mrlucky.com.mx, ivan@mrlucky.com.mx");
+                foreach (var i in correodes)
+                    //message.CC.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, aescamilla@mrlucky.com.mx, ivan@mrlucky.com.mx");
                     message.CC.Add(i.correo);
             message.Body = mensaje;
             message.BodyEncoding = Encoding.UTF8;
@@ -868,6 +1031,421 @@ namespace Tickets2
             }
         }
 
+        public void EnviarCorreoAsignacion()
+        {
+            string mensaje = "";
+            string correodestino = "";
+
+            int idServicio;
+            if (!int.TryParse(txtIdServicioResponsableSis.Text, out idServicio))
+            {
+                throw new Exception("ID de servicio no válido");
+            }
+
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on u.per_ID_Levanto equals p.per_ID
+                           where u.ser_ID == idServicio
+                           select new
+                           {
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = p.per_Nombre + " " + p.per_ApePat + " " + p.per_ApeMat,
+                               correo = p.per_Email,
+                               copiacorreo = p.per_copia
+                           };
+
+            MailMessage message = new MailMessage();
+
+            if (consulta.Count() > 0)
+            {
+                foreach (var i in consulta)
+                {
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    correodestino = i.correo;
+
+                    if (!string.IsNullOrEmpty(i.copiacorreo))
+                    {
+                        message.CC.Add(i.copiacorreo);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("No se encontró el servicio");
+            }
+
+            if (string.IsNullOrEmpty(correodestino))
+            {
+                throw new Exception("El correo del destinatario está vacío");
+            }
+
+            message.To.Add(correodestino);
+            message.Subject = "Sistema de Tickets - Asignacion";
+            message.SubjectEncoding = Encoding.UTF8;
+
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
+                            select new
+                            {
+                                correo = d.per_Email
+                            };
+
+            if (correodes.Count() > 0)
+            {
+                foreach (var i in correodes)
+                {
+                    if (!string.IsNullOrEmpty(i.correo))
+                    {
+                        message.CC.Add(i.correo);
+                    }
+                }
+            }
+
+            message.Body = mensaje;
+            message.BodyEncoding = Encoding.UTF8;
+            message.IsBodyHtml = true;
+            message.From = new MailAddress("sistemas@mrlucky.com.mx");
+
+            SmtpClient smtpClient = new SmtpClient();
+
+            // CORRECCIÓN 1: Usar NetworkCredential con correo completo
+            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "sisgab");
+            smtpClient.Port = 587;
+            smtpClient.EnableSsl = true;
+            smtpClient.Host = "mail1.mrlucky.com.mx";
+            smtpClient.Timeout = 30000;
+
+            // CORRECCIÓN 2: Forzar TLS 1.2 antes de conectar
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 |
+                                                    SecurityProtocolType.Tls11 |
+                                                    SecurityProtocolType.Tls;
+
+            // CORRECCIÓN 3: Ignorar validación de certificados (necesario por Mono en Ubuntu)
+            ServicePointManager.ServerCertificateValidationCallback =
+                (sender, certificate, chain, sslPolicyErrors) =>
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"Certificate: {certificate?.Subject ?? "null"}, Issuer: {certificate?.Issuer ?? "null"}");
+
+                    // Aceptar certificados de SSL.com
+                    if (certificate != null && certificate.Issuer.Contains("SSL.com"))
+                    {
+                        return true;
+                    }
+
+                    // Si no es SSL.com, validar normalmente
+                    return sslPolicyErrors == System.Net.Security.SslPolicyErrors.None;
+                };
+
+            try
+            {
+                smtpClient.Send(message);
+                MessageBox.Show("Correo enviado correctamente");
+            }
+            catch (SmtpException ex)
+            {
+                // Log detallado del error
+                string errorDetalle = $"Error SMTP:\n" +
+                    $"Message: {ex.Message}\n" +
+                    $"Inner: {ex.InnerException?.Message ?? "N/A"}\n" +
+                    $"StatusCode: {ex.StatusCode}\n" +
+                    $"Host: {smtpClient.Host}\n" +
+                    $"Port: {smtpClient.Port}\n" +
+                    $"SSL: {smtpClient.EnableSsl}";
+
+                System.Diagnostics.Debug.WriteLine(errorDetalle);
+                MessageBox.Show("Error al enviar correo:\n" + ex.Message +
+                    "\n\nSi el problema persiste, contacte al administrador.");
+            }
+            finally
+            {
+                message.Dispose();
+                smtpClient.Dispose();
+            }
+        }
+
+        public void EnviarCorreoAsignacionOGV1()
+        {
+            string mensaje = "";
+            string correodestino = "";
+
+            // Validar que el ID sea válido
+            int idServicio;
+            if (!int.TryParse(txtIdServicioResponsableSis.Text, out idServicio))
+            {
+                throw new Exception("ID de servicio no válido para enviar correo");
+            }
+
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on u.per_ID_Levanto equals p.per_ID
+                           where u.ser_ID == idServicio
+                           select new
+                           {
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = p.per_Nombre + " " + p.per_ApePat + " " + p.per_ApeMat,
+                               correo = p.per_Email,
+                               copiacorreo = p.per_copia
+                           };
+
+            MailMessage message = new MailMessage();
+
+            if (consulta.Count() > 0)
+            {
+                foreach (var i in consulta)
+                {
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    correodestino = i.correo;
+
+                    if (!string.IsNullOrEmpty(i.copiacorreo))
+                    {
+                        message.CC.Add(i.copiacorreo);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("No se encontró información del servicio para enviar el correo");
+            }
+
+            if (string.IsNullOrEmpty(correodestino))
+            {
+                throw new Exception("El correo del destinatario está vacío");
+            }
+
+            message.To.Add(correodestino);
+            message.Subject = "Sistema de Tickets - Asignacion";
+            message.SubjectEncoding = Encoding.UTF8;
+
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
+                            select new
+                            {
+                                correo = d.per_Email
+                            };
+
+            if (correodes.Count() > 0)
+            {
+                foreach (var i in correodes)
+                {
+                    if (!string.IsNullOrEmpty(i.correo))
+                    {
+                        message.CC.Add(i.correo);
+                    }
+                }
+            }
+
+            message.Body = mensaje;
+            message.BodyEncoding = Encoding.UTF8;
+            message.IsBodyHtml = true;
+            message.From = new MailAddress("sistemas@mrlucky.com.mx");
+
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "sisgab");
+            smtpClient.Port = 587;
+            smtpClient.EnableSsl = true;
+            smtpClient.Host = "mail1.mrlucky.com.mx";
+            smtpClient.Timeout = 30000;
+
+            // CORRECCIÓN: Ignorar errores de certificado (SOLO para pruebas)
+            // IMPORTANTE: En producción, validar correctamente el certificado
+            ServicePointManager.ServerCertificateValidationCallback = delegate (object sender,
+                System.Security.Cryptography.X509Certificates.X509Certificate certificate,
+                System.Security.Cryptography.X509Certificates.X509Chain chain,
+                System.Net.Security.SslPolicyErrors sslPolicyErrors)
+            {
+                // Acepta cualquier certificado (INSEGURO en producción)
+                // return true;
+
+                // O valida el certificado correctamente
+                return sslPolicyErrors == System.Net.Security.SslPolicyErrors.None;
+            };
+
+            try
+            {
+                smtpClient.Send(message);
+            }
+            catch (SmtpException ex)
+            {
+                // Intentar con puerto alternativo 465
+                try
+                {
+                    smtpClient.Port = 465;
+                    smtpClient.Send(message);
+                }
+                catch (SmtpException ex2)
+                {
+                    // Intentar sin SSL
+                    try
+                    {
+                        smtpClient.EnableSsl = false;
+                        smtpClient.Port = 25;
+                        smtpClient.Send(message);
+                    }
+                    catch (SmtpException ex3)
+                    {
+                        throw new Exception("Error al enviar correo después de intentar múltiples configuraciones:\n" +
+                            "Intento 1 (587 SSL): " + ex.Message + "\n" +
+                            "Intento 2 (465 SSL): " + ex2.Message + "\n" +
+                            "Intento 3 (25 sin SSL): " + ex3.Message, ex3);
+                    }
+                }
+            }
+            finally
+            {
+                message.Dispose();
+                smtpClient.Dispose();
+                // Restaurar validación de certificados
+                ServicePointManager.ServerCertificateValidationCallback = null;
+            }
+        }
+
+        public void EnviarCorreoAsignacionOGV2()
+        {
+            string mensaje = "";
+            string correodestino = "";
+
+            int idServicio;
+            if (!int.TryParse(txtIdServicioResponsableSis.Text, out idServicio))
+            {
+                throw new Exception("ID de servicio no válido para enviar correo");
+            }
+
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on u.per_ID_Levanto equals p.per_ID
+                           where u.ser_ID == idServicio
+                           select new
+                           {
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = p.per_Nombre + " " + p.per_ApePat + " " + p.per_ApeMat,
+                               correo = p.per_Email,
+                               copiacorreo = p.per_copia
+                           };
+
+            MailMessage message = new MailMessage();
+
+            if (consulta.Count() > 0)
+            {
+                foreach (var i in consulta)
+                {
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    correodestino = i.correo;
+
+                    if (!string.IsNullOrEmpty(i.copiacorreo))
+                    {
+                        message.CC.Add(i.copiacorreo);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("No se encontró información del servicio para enviar el correo");
+            }
+
+            if (string.IsNullOrEmpty(correodestino))
+            {
+                throw new Exception("El correo del destinatario está vacío");
+            }
+
+            message.To.Add(correodestino);
+            message.Subject = "Sistema de Tickets - Asignacion";
+            message.SubjectEncoding = Encoding.UTF8;
+
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
+                            select new
+                            {
+                                correo = d.per_Email
+                            };
+
+            if (correodes.Count() > 0)
+            {
+                foreach (var i in correodes)
+                {
+                    if (!string.IsNullOrEmpty(i.correo))
+                    {
+                        message.CC.Add(i.correo);
+                    }
+                }
+            }
+
+            message.Body = mensaje;
+            message.BodyEncoding = Encoding.UTF8;
+            message.IsBodyHtml = true;
+            message.From = new MailAddress("sistemas@mrlucky.com.mx");
+
+            // Configuración base
+            SmtpClient smtpClient = new SmtpClient();
+            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "sisgab");
+            smtpClient.Host = "mail1.mrlucky.com.mx";
+            smtpClient.Timeout = 30000;
+
+            // CORRECCIÓN: Intentar múltiples configuraciones debido a actualización de certificado
+            bool enviado = false;
+            Exception ultimaExcepcion = null;
+
+            // Configuración 1: Puerto 587 con SSL (TLS)
+            try
+            {
+                smtpClient.Port = 587;
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(message);
+                enviado = true;
+            }
+            catch (SmtpException ex)
+            {
+                ultimaExcepcion = ex;
+            }
+
+            // Configuración 2: Puerto 465 con SSL (SSL antiguo)
+            if (!enviado)
+            {
+                try
+                {
+                    smtpClient.Port = 465;
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Send(message);
+                    enviado = true;
+                }
+                catch (SmtpException ex)
+                {
+                    ultimaExcepcion = ex;
+                }
+            }
+
+            // Configuración 3: Puerto 25 sin SSL (para red interna)
+            if (!enviado)
+            {
+                try
+                {
+                    smtpClient.Port = 25;
+                    smtpClient.EnableSsl = false;
+                    smtpClient.Send(message);
+                    enviado = true;
+                }
+                catch (SmtpException ex)
+                {
+                    ultimaExcepcion = ex;
+                }
+            }
+
+            if (!enviado && ultimaExcepcion != null)
+            {
+                throw new Exception("Error al enviar correo después de intentar múltiples configuraciones:\n" +
+                    "1. Puerto 587 SSL: " + ultimaExcepcion.Message + "\n\n" +
+                    "Posibles soluciones:\n" +
+                    "- Verificar que el certificado del servidor sea válido\n" +
+                    "- Contactar al proveedor de email para confirmar configuración SMTP\n" +
+                    "- Revisar firewall y acceso al servidor de correo", ultimaExcepcion);
+            }
+
+            message.Dispose();
+            smtpClient.Dispose();
+        }
 
         public void EnviarCorreoComentario()
         {
@@ -934,7 +1512,7 @@ namespace Tickets2
                 }
             }
             //MessageBox.Show(correodestino);
-           
+
             message.To.Add(correodestino);
             message.Subject = "Sistema de Tickets - Comentario";
             message.SubjectEncoding = Encoding.UTF8;
@@ -1034,7 +1612,7 @@ namespace Tickets2
                 }
             }
 
-            
+
             message.To.Add(correodestino);
             message.Subject = "Sistema de Tickets - Servicio Finalizado";
             message.SubjectEncoding = Encoding.UTF8;
@@ -1073,7 +1651,7 @@ namespace Tickets2
         {
             string mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>REGISTRO AL SISTEMA DE TICKETS EXITOSO</td></tr><tr><td>USUARIO: </td><td>" + txtNombreUsuario.Text + "</td></tr><tr><td>Password: </td><td>" + txtPasswordUsuario.Text + "</td></tr><tr><td>Nombre Del usuario: </td><td>" + txtNombre.Text + " " + txtApellidoP.Text + " " + txtApellidoM.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
             string correodestino = "";
- 
+
             MailMessage message = new MailMessage();
             message.To.Add(txtEmail.Text);
             message.Subject = "Sistema de Tickets - Registro Finalizado";

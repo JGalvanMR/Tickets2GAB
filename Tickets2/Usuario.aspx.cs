@@ -27,62 +27,62 @@ namespace Tickets2
         {
             dcDatos = new dcTicketsDataContext();
 
-                if (Session["objUser"] != null)
+            if (Session["objUser"] != null)
+            {
+                objUser = (Usuario)Session["objUser"];
+                if (!this.IsPostBack)
                 {
-                    objUser = (Usuario)Session["objUser"];
-                    if (!this.IsPostBack)
+                    lblUsuario.Text = objUser.Persona.per_ID.ToString();
+                    lbNombre.Text = objUser.Persona.per_Nombre + " " + objUser.Persona.per_ApePat + " " + objUser.Persona.per_ApeMat;
+                    LbEmail.Text = objUser.Persona.per_Email;
+                    LbTele.Text = objUser.Persona.per_ExtTelefono;
+
+                    //-------------------------------------
+                    //    Cargar combo area
+                    //------------------------------------
+
+                    CargarCmbArea();
+
+                    //-------------------------------------
+                    //    Cargar combo equipos
+                    //-------------------------------------
+
+                    CargarCmbEquipos();
+
+                    //----------------------------------------------------------------------------------
+                    //                  CARGAR COMBO DE ASIGNAR A
+                    //----------------------------------------------------------------------------------
+                    var consultaAsignarA = from d in dcDatos.Departamento
+                                           where d.dep_AtiendeServicios == true
+                                           select new
+                                           {
+                                               ID = d.dep_ID,
+                                               Departamento = d.dep_Departamento
+                                           };
+                    cmbAsignar.DataSource = consultaAsignarA.ToList();
+                    cmbAsignar.DataValueField = "ID";
+                    cmbAsignar.DataTextField = "Departamento";
+                    cmbAsignar.DataBind();
+
+                    if (cmbAsignar.Items.Count > 0)
+                        cmbAsignar.SelectedIndex = -1;
+
+                    if (cmbAsignar.SelectedValue == "1")
                     {
-                        lblUsuario.Text = objUser.Persona.per_ID.ToString();
-                        lbNombre.Text = objUser.Persona.per_Nombre + " " + objUser.Persona.per_ApePat +" "+ objUser.Persona.per_ApeMat;
-                        LbEmail.Text = objUser.Persona.per_Email;
-                        LbTele.Text = objUser.Persona.per_ExtTelefono;
+                        cmbArea.Enabled = false;
+                        cmbEquipo.Enabled = false;
+                    }
 
-                        //-------------------------------------
-                        //    Cargar combo area
-                        //------------------------------------
-
-                        CargarCmbArea();
-
-                        //-------------------------------------
-                        //    Cargar combo equipos
-                        //-------------------------------------
-
-                        CargarCmbEquipos();
-
-                        //----------------------------------------------------------------------------------
-                        //                  CARGAR COMBO DE ASIGNAR A
-                        //----------------------------------------------------------------------------------
-                        var consultaAsignarA = from d in dcDatos.Departamento
-                                               where d.dep_AtiendeServicios == true
-                                               select new
-                                               {
-                                                   ID = d.dep_ID,
-                                                   Departamento = d.dep_Departamento
-                                               };
-                        cmbAsignar.DataSource = consultaAsignarA.ToList();
-                        cmbAsignar.DataValueField = "ID";
-                        cmbAsignar.DataTextField = "Departamento";
-                        cmbAsignar.DataBind();
-
-                        if (cmbAsignar.Items.Count > 0)
-                            cmbAsignar.SelectedIndex = -1;
-
-                        if (cmbAsignar.SelectedValue == "1")
-                        {
-                            cmbArea.Enabled = false;
-                            cmbEquipo.Enabled = false;
-                        }
-                        
                     //////////////////////////////////
                     //--------CARGAR GRIDS---------//
                     /////////////////////////////////
                     CargarGrids();
-                    }
                 }
-                else
-                {
-                    Response.Redirect("PaginaLogin.aspx");
-                }
+            }
+            else
+            {
+                Response.Redirect("PaginaLogin.aspx");
+            }
         }
 
         private void CargarCmbArea()
@@ -211,10 +211,11 @@ namespace Tickets2
                     else
                         objServ.ser_ID = 1;
                 }
-                catch {
+                catch
+                {
                     objServ.ser_ID = 1;
                 }
-                
+
 
                 objServ.sere_ID = (int)enumServicioEstado.Solicitado;
                 objServ.per_ID_Levanto = objUser.Persona.per_ID; //este dato lo obtienes de la variable de sesion del usuario logueado
@@ -234,9 +235,9 @@ namespace Tickets2
 
                 objServ.ser_FechaIngreso = DateTime.Now;
                 objServ.ser_FechaUltimoE = objServ.ser_FechaIngreso;
-                objServ.ser_DeptoQueAtiende = int.Parse(cmbAsignar.SelectedValue);                
+                objServ.ser_DeptoQueAtiende = int.Parse(cmbAsignar.SelectedValue);
                 EnviarCorreo();
-                
+
                 dcDatos.Servicio.InsertOnSubmit(objServ);
                 dcDatos.SubmitChanges();
                 CargarGrids();
@@ -270,24 +271,24 @@ namespace Tickets2
         {
             Servicio objServ = new Servicio();
 
-                var consultaNewID = from row in dcDatos.Servicio
-                                    group row by true into s
-                                    select new
-                                    {
-                                        newID = s.Max(id => id.ser_ID)
-                                    };
-                try
-                {
-                    if (consultaNewID.First() != null)
-                        objServ.ser_ID = consultaNewID.First().newID + 1;
-                    else
-                        objServ.ser_ID = 1;
-                }
-                catch
-                {
+            var consultaNewID = from row in dcDatos.Servicio
+                                group row by true into s
+                                select new
+                                {
+                                    newID = s.Max(id => id.ser_ID)
+                                };
+            try
+            {
+                if (consultaNewID.First() != null)
+                    objServ.ser_ID = consultaNewID.First().newID + 1;
+                else
                     objServ.ser_ID = 1;
-                }
-                
+            }
+            catch
+            {
+                objServ.ser_ID = 1;
+            }
+
 
             Persona persona = this.dcDatos.Persona.Where<Persona>((Expression<Func<Persona, bool>>)(p => p.dep_ID == int.Parse(this.cmbAsignar.SelectedValue))).First<Persona>();
             MailMessage message = new MailMessage();
@@ -295,7 +296,8 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
-            if (this.objUser.Persona.per_copia != "" && this.objUser.Persona.per_copia != null) {
+            if (this.objUser.Persona.per_copia != "" && this.objUser.Persona.per_copia != null)
+            {
                 message.CC.Add(this.objUser.Persona.per_copia);
             }
             /*if (this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat == "Materia Prima")
@@ -331,9 +333,9 @@ namespace Tickets2
             */
 
             if (this.cmbAsignar.SelectedItem.ToString().Trim() == "SISTEMAS")
-                message.To.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, dmunoz@mrlucky.com.mx, aescamilla@mrlucky.com.mx, andrea@mrlucky.com.mx");
+                message.To.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, jgalvan@mrlucky.com.mx, elizabeth@mrlucky.com.mx");
             if (this.cmbAsignar.SelectedItem.ToString().Trim() == "MANTENIMIENTO")
-                message.To.Add("mantenimiento@mrlucky.com.mx, aldosoto@mrlucky.com.mx");
+                message.To.Add("mantenimiento@mrlucky.com.mx, aldosoto@mrlucky.com.mx, admin.mtto@mrlucky.com.mx");
             string str = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + objServ.ser_ID.ToString() + "</td></tr><tr><td>Reporto: </td><td>" + this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + "</td></tr><tr><td>Descripcion: </td><td>" + this.txtIncidente.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
             message.Body = str;
             message.BodyEncoding = Encoding.UTF8;
@@ -539,9 +541,9 @@ namespace Tickets2
             }*/
 
             if (this.cmbAsignar.SelectedItem.ToString().Trim() == "SISTEMAS")
-                message.To.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, dmunoz@mrlucky.com.mx, aescamilla@mrlucky.com.mx, andrea@mrlucky.com.mx");
+                message.To.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, jgalvan@mrlucky.com.mx, elizabeth@mrlucky.com.mx");
             if (this.cmbAsignar.SelectedItem.ToString().Trim() == "MANTENIMIENTO")
-                message.To.Add("mantenimiento@mrlucky.com.mx, aldosoto@mrlucky.com.mx");
+                message.To.Add("mantenimiento@mrlucky.com.mx, aldosoto@mrlucky.com.mx, admin.mtto@mrlucky.com.mx");
             string str = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioUsuario.Text.ToString() + "</td></tr><tr><td>Reporto: </td><td>" + this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + "</td></tr><tr><td>Descripcion: </td><td>" + incidencia + "</td></tr></tr><tr><td>Servicio Atendido Por: </td><td>" + atiende + "</td></tr></tr><tr><td>Comentario: </td><td>" + this.txtComentarioUsuario.Text + "</td></tr></table>";
             message.Body = str;
             message.BodyEncoding = Encoding.UTF8;
@@ -606,90 +608,90 @@ namespace Tickets2
             var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(objUser.per_ID, 0);
             dgFinalizados.DataSource = consulta3;
             dgFinalizados.DataBind();
-        
+
         }
 
         protected void BtnCambiarContra_Click(object sender, EventArgs e)
         {
             #region Validar Cajas
-                if (string.IsNullOrEmpty(txtContraAct.Text))
-                {
-                    MessageBox.Show("Ingrese su contraseña actual.");
-                    //limpiar caja
-                    txtContraAct.Text = "";
-                    txtContraAct.Focus();
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtNuevaContra.Text))
-                {
-                    MessageBox.Show("Ingrese su nueva contraseña.");
-                    //limpiar caja
-                    txtNuevaContra.Text = "";
-                    txtNuevaContra.Focus();
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtConfirmContra.Text))
-                {
-                    MessageBox.Show("Ingrese la confirmación de su nueva contraseña.");
-                    //limpiar caja
-                    txtConfirmContra.Text = "";
-                    txtConfirmContra.Focus();
-                    return;
-                }
-               //Validar si el password actual del usuario coincide con el ingresado en la caja de texto
-                Usuario objUsuValida = (from s in dcDatos.Usuario
-                                         where s.usu_ID == objUser.usu_ID
-                                         select s).SingleOrDefault();
-                if(objUsuValida.usu_Password != txtContraAct.Text)
-                {
-                    MessageBox.Show("Contraseña Actual incorrecta");
-                    //limpiar caja
-                    txtContraAct.Text = "";
-                    txtContraAct.Focus();
-                    return;
-                }
-                //Validar que haya confirmado bien la contraseña
-                if (txtNuevaContra.Text != txtConfirmContra.Text)
-                {
-                    MessageBox.Show("Favor de confirmar bien su contraseña");
-                    return;
-                }
+            if (string.IsNullOrEmpty(txtContraAct.Text))
+            {
+                MessageBox.Show("Ingrese su contraseña actual.");
+                //limpiar caja
+                txtContraAct.Text = "";
+                txtContraAct.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(txtNuevaContra.Text))
+            {
+                MessageBox.Show("Ingrese su nueva contraseña.");
+                //limpiar caja
+                txtNuevaContra.Text = "";
+                txtNuevaContra.Focus();
+                return;
+            }
+            if (string.IsNullOrEmpty(txtConfirmContra.Text))
+            {
+                MessageBox.Show("Ingrese la confirmación de su nueva contraseña.");
+                //limpiar caja
+                txtConfirmContra.Text = "";
+                txtConfirmContra.Focus();
+                return;
+            }
+            //Validar si el password actual del usuario coincide con el ingresado en la caja de texto
+            Usuario objUsuValida = (from s in dcDatos.Usuario
+                                    where s.usu_ID == objUser.usu_ID
+                                    select s).SingleOrDefault();
+            if (objUsuValida.usu_Password != txtContraAct.Text)
+            {
+                MessageBox.Show("Contraseña Actual incorrecta");
+                //limpiar caja
+                txtContraAct.Text = "";
+                txtContraAct.Focus();
+                return;
+            }
+            //Validar que haya confirmado bien la contraseña
+            if (txtNuevaContra.Text != txtConfirmContra.Text)
+            {
+                MessageBox.Show("Favor de confirmar bien su contraseña");
+                return;
+            }
 
             #endregion
-                try
-                {
-                    Usuario queryCambiarContra =
-                        (from ord in dcDatos.Usuario
-                         where ord.usu_ID == objUser.usu_ID
-                         select ord).SingleOrDefault();
+            try
+            {
+                Usuario queryCambiarContra =
+                    (from ord in dcDatos.Usuario
+                     where ord.usu_ID == objUser.usu_ID
+                     select ord).SingleOrDefault();
 
-                    queryCambiarContra.usu_Password = txtNuevaContra.Text;
-                    dcDatos.SubmitChanges();
-                    MessageBox.Show("Nueva Contraseñan guardada");
-                }
-                catch (ChangeConflictException)
+                queryCambiarContra.usu_Password = txtNuevaContra.Text;
+                dcDatos.SubmitChanges();
+                MessageBox.Show("Nueva Contraseñan guardada");
+            }
+            catch (ChangeConflictException)
+            {
+                foreach (ObjectChangeConflict occ in dcDatos.ChangeConflicts)
                 {
-                    foreach (ObjectChangeConflict occ in dcDatos.ChangeConflicts)
-                    {
-                        // All database values overwrite current values.
-                        occ.Resolve(RefreshMode.OverwriteCurrentValues);
-                        MessageBox.Show("Contraseña modificada por otro usuario");
-                    }
+                    // All database values overwrite current values.
+                    occ.Resolve(RefreshMode.OverwriteCurrentValues);
+                    MessageBox.Show("Contraseña modificada por otro usuario");
                 }
-                catch (System.Data.SqlClient.SqlException ex)
-                {
-                    MessageBox.Show("Error de SQL: " + ex.Message
-                                    + "\n" + "Consulte con el administrador del sistema.");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Ocurrio el siguiente error: " + ex.Message
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show("Error de SQL: " + ex.Message
                                 + "\n" + "Consulte con el administrador del sistema.");
-                }
-                //limpiar cajas
-                txtContraAct.Text = "";
-                txtNuevaContra.Text = "";
-                txtConfirmContra.Text = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrio el siguiente error: " + ex.Message
+                            + "\n" + "Consulte con el administrador del sistema.");
+            }
+            //limpiar cajas
+            txtContraAct.Text = "";
+            txtNuevaContra.Text = "";
+            txtConfirmContra.Text = "";
         }
 
         protected void cmbAsignar_SelectedIndexChanged(object sender, EventArgs e)
@@ -724,7 +726,7 @@ namespace Tickets2
             var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(objUser.per_ID, 0);
 
             dgFinalizados.PageIndex = e.NewPageIndex;
-            
+
             dgFinalizados.DataSource = consulta3;
             dgFinalizados.DataBind();
         }

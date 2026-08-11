@@ -749,9 +749,9 @@ namespace Tickets2
             dgAbiertosSis.DataSource = consulta2;
             dgAbiertosSis.DataBind();
 
-            //var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1);
-            //dgFinalizadosxis.DataSource = consulta3;
-            //dgFinalizadosxis.DataBind();
+            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1);
+            dgFinalizadosxis.DataSource = consulta3;
+            dgFinalizadosxis.DataBind();
         }
 
         protected void dgFinalizadosSis_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -1017,7 +1017,7 @@ namespace Tickets2
             message.IsBodyHtml = true;
             message.From = new MailAddress("sistemas@mrlucky.com.mx");
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "sisgab");
+            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -1110,7 +1110,7 @@ namespace Tickets2
             SmtpClient smtpClient = new SmtpClient();
 
             // CORRECCIÓN 1: Usar NetworkCredential con correo completo
-            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "sisgab");
+            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -1243,7 +1243,7 @@ namespace Tickets2
             message.From = new MailAddress("sistemas@mrlucky.com.mx");
 
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "sisgab");
+            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -1380,7 +1380,7 @@ namespace Tickets2
 
             // Configuración base
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "sisgab");
+            smtpClient.Credentials = new NetworkCredential("sistemas@mrlucky.com.mx", "Sistem@s2026$");
             smtpClient.Host = "mail1.mrlucky.com.mx";
             smtpClient.Timeout = 30000;
 
@@ -1533,7 +1533,7 @@ namespace Tickets2
             message.IsBodyHtml = true;
             message.From = new MailAddress("sistemas@mrlucky.com.mx");
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "sisgab");
+            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -1633,7 +1633,7 @@ namespace Tickets2
             message.IsBodyHtml = true;
             message.From = new MailAddress("sistemas@mrlucky.com.mx");
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "sisgab");
+            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -1660,7 +1660,7 @@ namespace Tickets2
             message.IsBodyHtml = true;
             message.From = new MailAddress("sistemas@mrlucky.com.mx");
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "sisgab");
+            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";

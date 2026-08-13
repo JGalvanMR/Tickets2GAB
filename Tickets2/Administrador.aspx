@@ -454,7 +454,6 @@
                     </asp:GridView>
                     <hr />
                     <h2>Servicios Finalizados de Sistemas </h2>
-
                     <asp:GridView runat="server" ID="dgFinalizadosxis" CssClass="table table-bordered table-responsive table-hover table-striped"
                         AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true"
                         OnPageIndexChanging="dgFinalizadosSis_PageIndexChanging">

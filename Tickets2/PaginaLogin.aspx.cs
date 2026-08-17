@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Datos;
+using Datos; // Asegúrese de que la siguiente directiva using esté presente
+// y que el tipo dcTicketsDataContext exista en el espacio de nombres Datos.
 
 namespace Tickets2
 {
@@ -24,12 +25,12 @@ namespace Tickets2
         {
             if (cmbRol.SelectedValue == "user") //Trabajador
             {
-                var consulta = from u in dcDatos.Usuario
-                               join p in dcDatos.Persona on u.per_ID equals p.per_ID
-                               join t in dcDatos.Trabajador on p.per_ID equals t.per_ID
-                               where u.usu_Usuario == txtUsuario.Text
-                                    && u.usu_Password == txtPass.Text
-                                    && p.per_IsActivo == true
+                var consulta = from u in dcDatos.Usuarios
+                               join p in dcDatos.Personas on u.Per_ID equals p.Per_ID
+                               join t in dcDatos.Trabajadors on p.Per_ID equals t.Per_ID
+                               where u.Usu_Usuario == txtUsuario.Text
+                                    && u.Usu_Password == txtPass.Text
+                                    && p.Per_IsActivo == true
                                select u;
 
                 if (consulta != null)
@@ -52,13 +53,13 @@ namespace Tickets2
             }
             else if (cmbRol.SelectedValue == "adminsis")
             {
-                var consulta = from u in dcDatos.Usuario
-                               join p in dcDatos.Persona on u.per_ID equals p.per_ID
-                               join t in dcDatos.Administrador on p.per_ID equals t.per_ID
-                               where u.usu_Usuario == txtUsuario.Text
-                                    && u.usu_Password == txtPass.Text
-                                    && p.dep_ID == 1
-                                    && p.per_IsActivo == true
+                var consulta = from u in dcDatos.Usuarios
+                               join p in dcDatos.Personas on u.Per_ID equals p.Per_ID
+                               join t in dcDatos.Administradors on p.Per_ID equals t.Per_ID
+                               where u.Usu_Usuario == txtUsuario.Text
+                                    && u.Usu_Password == txtPass.Text
+                                    && p.Dep_ID == 1
+                                    && p.Per_IsActivo == true
                                select u;
 
                 if (consulta != null)
@@ -80,13 +81,13 @@ namespace Tickets2
             }
             else if (cmbRol.SelectedValue == "adminman")
             {
-                var consulta = from u in dcDatos.Usuario
-                               join p in dcDatos.Persona on u.per_ID equals p.per_ID
-                               join t in dcDatos.Administrador on p.per_ID equals t.per_ID
-                               where u.usu_Usuario == txtUsuario.Text
-                                    && u.usu_Password == txtPass.Text
-                                    && p.dep_ID == 5
-                                    && p.per_IsActivo == true
+                var consulta = from u in dcDatos.Usuarios
+                               join p in dcDatos.Personas on u.Per_ID equals p.Per_ID
+                               join t in dcDatos.Administradors on p.Per_ID equals t.Per_ID
+                               where u.Usu_Usuario == txtUsuario.Text
+                                    && u.Usu_Password == txtPass.Text
+                                    && p.Dep_ID == 5
+                                    && p.Per_IsActivo == true
                                select u;
 
                 if (consulta != null)

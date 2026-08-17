@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Tickets2" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Tickets2" Class="dcTicketsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=tcp:192.168.123.6,1433;Initial Catalog=Tickets2;Persist Security Info=True;User ID=sa;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="Datos.Properties.Settings" SettingsPropertyName="Tickets2ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Administrador" Member="Administradors">
     <Type Name="Administrador">
@@ -140,20 +140,6 @@
       <Association Name="Persona_Usuario" Member="Persona" ThisKey="Per_ID" OtherKey="Per_ID" Type="Persona" IsForeignKey="true" />
     </Type>
   </Table>
-  <Function Name="dbo.sp_Get_ServiciosAsignados" Method="sp_Get_ServiciosAsignados">
-    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
-    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="sp_Get_ServiciosAsignadosResult">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
-      <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
-      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Asignado_A" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Fecha_Estimada_Fin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Fecha_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Ultimo_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.sp_Get_ServiciosAsignadosM" Method="sp_Get_ServiciosAsignadosM">
     <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
     <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
@@ -204,18 +190,6 @@
       <Column Name="Duración" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.sp_Get_ServiciosSolicitados" Method="sp_Get_ServiciosSolicitados">
-    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
-    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="sp_Get_ServiciosSolicitadosResult">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
-      <Column Name="[Asignado A]" Member="Asignado_A" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
-      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.sp_Get_ServiciosSolicitadosM" Method="sp_Get_ServiciosSolicitadosM">
     <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
     <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
@@ -248,6 +222,32 @@
     <Parameter Name="tipo" Type="System.Int32" DbType="Int" />
     <ElementType Name="spTicketsConsultaMantoResult">
       <Column Name="Total" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosAsignados" Method="sp_Get_ServiciosAsignados">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosAsignadosResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Asignado_A" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Fecha_Estimada_Fin" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Fecha_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Ultimo_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosSolicitados" Method="sp_Get_ServiciosSolicitados">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosSolicitadosResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="[Asignado A]" Member="Asignado_A" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>

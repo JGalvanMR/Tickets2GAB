@@ -22,20 +22,20 @@ namespace Tickets2
                 //----------------------------------------------------------------------------------
                 //                  SOLICITADOS
                 //---------------------------------------------------------------------------------
-                var consulta1 = from s in dcDatos.Servicio
-                                join pl in dcDatos.Persona on s.per_ID_Levanto equals pl.per_ID
-                                join dep in dcDatos.Departamento on s.ser_DeptoQueAtiende equals dep.dep_ID
-                                where s.sere_ID == (int)enumServicioEstado.Solicitado
-                                orderby s.ser_ID descending
+                var consulta1 = from s in dcDatos.Servicios
+                                join pl in dcDatos.Personas on s.Per_ID_Levanto equals pl.Per_ID
+                                join dep in dcDatos.Departamentos on s.Ser_DeptoQueAtiende equals dep.Dep_ID
+                                where s.Sere_ID == (int)enumServicioEstado.Solicitado
+                                orderby s.Ser_ID descending
                                 select new
                                 {
-                                    ID = s.ser_ID,
-                                    Fecha = s.ser_FechaIngreso,
-                                    Nombre = pl.per_ApePat + " " + pl.per_Nombre,
-                                    Solicitado_A = dep.dep_Departamento,
-                                    Area = s.ser_Area,
-                                    Equipo = s.ser_Equipo,
-                                    Incidente = s.ser_Incidente,
+                                    ID = s.Ser_ID,
+                                    Fecha = s.Ser_FechaIngreso,
+                                    Nombre = pl.Per_ApePat + " " + pl.Per_Nombre,
+                                    Solicitado_A = dep.Dep_Departamento,
+                                    Area = s.Ser_Area,
+                                    Equipo = s.Ser_Equipo,
+                                    Incidente = s.Ser_Incidente,
                                     Estado = "Solicitado"
                                 };
                 dgSolicitados.DataSource = consulta1;

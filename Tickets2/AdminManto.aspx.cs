@@ -75,12 +75,12 @@ namespace Tickets2
 
             //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
             //TENGA ESTATUS 2 (ASIGNADO)
-            Servicio objSerValida = (from s in dcDatos.Servicio
-                                     where s.ser_ID == ID_Servicio_Fin
+            Servicio objSerValida = (from s in dcDatos.Servicios
+                                     where s.Ser_ID == ID_Servicio_Fin
                                      select s).SingleOrDefault();
             if (objSerValida != null)
             {
-                if (objSerValida.sere_ID != (int)enumServicioEstado.Abierto)
+                if (objSerValida.Sere_ID != (int)enumServicioEstado.Abierto)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_Fin.ToString()
                         + " no tiene el estatus: Asignado. Por lo que no se puede finalizar el servicio.");
@@ -95,7 +95,7 @@ namespace Tickets2
                 MessageBox.Show("No existe el servicio.");
                 return;
             }
-            if (objSerValida.ser_DeptoQueAtiende != objAdminMan.Persona.dep_ID)
+            if (objSerValida.Ser_DeptoQueAtiende != objAdminMan.Persona.Dep_ID)
             {
                 MessageBox.Show("El servicio " + ID_Servicio_Fin.ToString()
                     + " no es uno de tus servicios solicitados.");
@@ -105,13 +105,13 @@ namespace Tickets2
             #endregion
 
             var queryFinalizarSerMan =
-                    from ord in dcDatos.Servicio
-                    where ord.ser_ID == Convert.ToInt32(txtIdServicioFinMan.Text)
+                    from ord in dcDatos.Servicios
+                    where ord.Ser_ID == Convert.ToInt32(txtIdServicioFinMan.Text)
                     select ord;
             foreach (Servicio ord in queryFinalizarSerMan)
             {
-                ord.sere_ID = 3;
-                ord.ser_FechaUltimoE = DateTime.Now;
+                ord.Sere_ID = 3;
+                ord.Ser_FechaUltimoE = DateTime.Now;
             }
             try
             {
@@ -192,12 +192,12 @@ namespace Tickets2
 
                 //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
                 //ESTE CON ESTATUS 2 (ASIGNADO) y 3(FINALIZADO)
-                Servicio objSerValida = (from s in dcDatos.Servicio
-                                         where s.ser_ID == ID_Servicio_Comentario
+                Servicio objSerValida = (from s in dcDatos.Servicios
+                                         where s.Ser_ID == ID_Servicio_Comentario
                                          select s).SingleOrDefault();
                 if (objSerValida != null)
                 {
-                    if (objSerValida.sere_ID == (int)enumServicioEstado.Solicitado)
+                    if (objSerValida.Sere_ID == (int)enumServicioEstado.Solicitado)
                     {
                         MessageBox.Show("El servicio " + ID_Servicio_Comentario.ToString()
                             + " tiene el estatus: Solicitado. Por lo que no se puede comentar.");
@@ -205,7 +205,7 @@ namespace Tickets2
                         return;
                     }
                 }
-                if (objSerValida.ser_DeptoQueAtiende != objAdminMan.Persona.dep_ID)
+                if (objSerValida.Ser_DeptoQueAtiende != objAdminMan.Persona.Dep_ID)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_Comentario.ToString()
                         + " no es uno de tus servicios solicitados.");
@@ -218,23 +218,23 @@ namespace Tickets2
 
                 //CALCULAR EL SIG. ID
                 var queryComentarMan =
-                        from row in dcDatos.Comentario
+                        from row in dcDatos.Comentarios
                         group row by true into s
                         select new
                         {
-                            newID = s.Max(id => id.com_ID)
+                            newID = s.Max(id => id.Com_ID)
                         };
                 if (queryComentarMan.First() != null)
-                    objComen.com_ID = queryComentarMan.First().newID + 1;
+                    objComen.Com_ID = queryComentarMan.First().newID + 1;
                 else
-                    objComen.com_ID = 1;
+                    objComen.Com_ID = 1;
 
-                objComen.ser_ID = ID_Servicio_Comentario;
-                objComen.com_Comentario = txtComentarioMan.Text;
-                objComen.com_FechaCom = DateTime.Now;
-                objComen.per_ID = objAdminMan.per_ID;
+                objComen.Ser_ID = ID_Servicio_Comentario;
+                objComen.Com_Comentario = txtComentarioMan.Text;
+                objComen.Com_FechaCom = DateTime.Now;
+                objComen.Per_ID = objAdminMan.Per_ID;
 
-                dcDatos.Comentario.InsertOnSubmit(objComen);
+                dcDatos.Comentarios.InsertOnSubmit(objComen);
                 dcDatos.SubmitChanges();
                 CargarGridManto();
                 MessageBox.Show("Comentario ingresado correctamente.");
@@ -313,12 +313,12 @@ namespace Tickets2
             }
             //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
             //TENGA ESTATUS 2 (ASIGNADO)
-            Servicio objSerValida = (from s in dcDatos.Servicio
-                                     where s.ser_ID == ID_Servicio_Responsable
+            Servicio objSerValida = (from s in dcDatos.Servicios
+                                     where s.Ser_ID == ID_Servicio_Responsable
                                      select s).SingleOrDefault();
             if (objSerValida != null)
             {
-                if (objSerValida.sere_ID != (int)enumServicioEstado.Solicitado)
+                if (objSerValida.Sere_ID != (int)enumServicioEstado.Solicitado)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_Responsable.ToString()
                         + " no tiene el estatus: Solicitado. Por lo que no se puede asignar un responsable al servicio.");
@@ -333,7 +333,7 @@ namespace Tickets2
                 MessageBox.Show("No existe el servicio.");
                 return;
             }
-            if (objSerValida.ser_DeptoQueAtiende != objAdminMan.Persona.dep_ID)
+            if (objSerValida.Ser_DeptoQueAtiende != objAdminMan.Persona.Dep_ID)
             {
                 MessageBox.Show("El servicio " + ID_Servicio_Responsable.ToString()
                     + " no es uno de tus servicios solicitados.");
@@ -344,8 +344,8 @@ namespace Tickets2
 
             try
             {
-                Servicio objSer = (from s in dcDatos.Servicio
-                                   where s.ser_ID == ID_Servicio_Responsable
+                Servicio objSer = (from s in dcDatos.Servicios
+                                   where s.Ser_ID == ID_Servicio_Responsable
                                    select s).SingleOrDefault();
                 if (objSer != null)
                 {
@@ -354,10 +354,10 @@ namespace Tickets2
                     string[] fecha = datetimepicker4.Text.Split('/');
 
 
-                    objSer.ser_Nombre_Atiende = cmbResponsableServicioMan.SelectedValue;
-                    objSer.ser_FechaUltimoE = DateTime.Now;
-                    objSer.sere_ID = (int)enumServicioEstado.Abierto;
-                    objSer.ser_FechaEstimadaFin = Convert.ToDateTime(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
+                    objSer.Ser_Nombre_Atiende = cmbResponsableServicioMan.SelectedValue;
+                    objSer.Ser_FechaUltimoE = DateTime.Now;
+                    objSer.Sere_ID = (int)enumServicioEstado.Abierto;
+                    objSer.Ser_FechaEstimadaFin = Convert.ToDateTime(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
                     dcDatos.SubmitChanges();
                     //Actualizar grid
                     CargarGridManto();
@@ -430,12 +430,12 @@ namespace Tickets2
 
                 //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
                 //ESTE CON ESTATUS 2 (ASIGNADO) y 3(FINALIZADO)
-                Servicio objSerValida = (from s in dcDatos.Servicio
-                                         where s.ser_ID == ID_Servicio_foto
+                Servicio objSerValida = (from s in dcDatos.Servicios
+                                         where s.Ser_ID == ID_Servicio_foto
                                          select s).SingleOrDefault();
                 if (objSerValida != null)
                 {
-                    if (objSerValida.sere_ID == (int)enumServicioEstado.Solicitado)
+                    if (objSerValida.Sere_ID == (int)enumServicioEstado.Solicitado)
                     {
                         MessageBox.Show("El servicio " + ID_Servicio_foto.ToString()
                             + " tiene el estatus: Solicitado. Por lo que no se puede agregar fotos.");
@@ -448,7 +448,7 @@ namespace Tickets2
                     MessageBox.Show("No existe el servicio.");
                     return;
                 }
-                if (objSerValida.ser_DeptoQueAtiende != objAdminMan.Persona.dep_ID)
+                if (objSerValida.Ser_DeptoQueAtiende != objAdminMan.Persona.Dep_ID)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_foto.ToString()
                         + " no es uno de tus servicios solicitados.");
@@ -469,11 +469,11 @@ namespace Tickets2
                 string fileName = ID_Servicio_foto.ToString();
                 int numfotos = 0;
 
-                var consultaNewID = from row in dcDatos.Servicio
-                                    where row.ser_ID == ID_Servicio_foto
+                var consultaNewID = from row in dcDatos.Servicios
+                                    where row.Ser_ID == ID_Servicio_foto
                                     select new
                                     {
-                                        Nofotos = row.ser_Num_Fotos
+                                        Nofotos = row.Ser_Num_Fotos
                                     };
 
                 if (consultaNewID.First() != null)
@@ -481,12 +481,12 @@ namespace Tickets2
                 else
                     numfotos = Convert.ToInt32(0);
 
-                Servicio objSer = (from s in dcDatos.Servicio
-                                   where s.ser_ID == ID_Servicio_foto
+                Servicio objSer = (from s in dcDatos.Servicios
+                                   where s.Ser_ID == ID_Servicio_foto
                                    select s).SingleOrDefault();
                 if (objSer != null)
                 {
-                    objSer.ser_Num_Fotos = numfotos + uploadedFiles.Count;
+                    objSer.Ser_Num_Fotos = numfotos + uploadedFiles.Count;
 
                     //dcDatos.Servicio.InsertOnSubmit(objServ);
                     dcDatos.SubmitChanges();

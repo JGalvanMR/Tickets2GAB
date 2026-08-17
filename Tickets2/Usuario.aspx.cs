@@ -32,10 +32,10 @@ namespace Tickets2
                 objUser = (Usuario)Session["objUser"];
                 if (!this.IsPostBack)
                 {
-                    lblUsuario.Text = objUser.Persona.per_ID.ToString();
-                    lbNombre.Text = objUser.Persona.per_Nombre + " " + objUser.Persona.per_ApePat + " " + objUser.Persona.per_ApeMat;
-                    LbEmail.Text = objUser.Persona.per_Email;
-                    LbTele.Text = objUser.Persona.per_ExtTelefono;
+                    lblUsuario.Text = objUser.Persona.Per_ID.ToString();
+                    lbNombre.Text = objUser.Persona.Per_Nombre + " " + objUser.Persona.Per_ApePat + " " + objUser.Persona.Per_ApeMat;
+                    LbEmail.Text = objUser.Persona.Per_Email;
+                    LbTele.Text = objUser.Persona.Per_ExtTelefono;
 
                     //-------------------------------------
                     //    Cargar combo area
@@ -52,12 +52,12 @@ namespace Tickets2
                     //----------------------------------------------------------------------------------
                     //                  CARGAR COMBO DE ASIGNAR A
                     //----------------------------------------------------------------------------------
-                    var consultaAsignarA = from d in dcDatos.Departamento
-                                           where d.dep_AtiendeServicios == true
+                    var consultaAsignarA = from d in dcDatos.Departamentos
+                                           where d.Dep_AtiendeServicios == true
                                            select new
                                            {
-                                               ID = d.dep_ID,
-                                               Departamento = d.dep_Departamento
+                                               ID = d.Dep_ID,
+                                               Departamento = d.Dep_Departamento
                                            };
                     cmbAsignar.DataSource = consultaAsignarA.ToList();
                     cmbAsignar.DataValueField = "ID";
@@ -129,11 +129,11 @@ namespace Tickets2
             string fileName = "";
 
 
-            var consultaNewID = from row in dcDatos.Servicio
+            var consultaNewID = from row in dcDatos.Servicios
                                 group row by true into s
                                 select new
                                 {
-                                    newID = s.Max(id => id.ser_ID)
+                                    newID = s.Max(id => id.Ser_ID)
                                 };
 
             if (consultaNewID.First() != null)
@@ -198,47 +198,47 @@ namespace Tickets2
 
                 Servicio objServ = new Servicio();
 
-                var consultaNewID = from row in dcDatos.Servicio
+                var consultaNewID = from row in dcDatos.Servicios
                                     group row by true into s
                                     select new
                                     {
-                                        newID = s.Max(id => id.ser_ID)
+                                        newID = s.Max(id => id.Ser_ID)
                                     };
                 try
                 {
                     if (consultaNewID.First() != null)
-                        objServ.ser_ID = consultaNewID.First().newID + 1;
+                        objServ.Ser_ID = consultaNewID.First().newID + 1;
                     else
-                        objServ.ser_ID = 1;
+                        objServ.Ser_ID = 1;
                 }
                 catch
                 {
-                    objServ.ser_ID = 1;
+                    objServ.Ser_ID = 1;
                 }
 
 
-                objServ.sere_ID = (int)enumServicioEstado.Solicitado;
-                objServ.per_ID_Levanto = objUser.Persona.per_ID; //este dato lo obtienes de la variable de sesion del usuario logueado
-                objServ.ser_Incidente = txtIncidente.Text;
+                objServ.Sere_ID = (int)enumServicioEstado.Solicitado;
+                objServ.Per_ID_Levanto = objUser.Persona.Per_ID; //este dato lo obtienes de la variable de sesion del usuario logueado
+                objServ.Ser_Incidente = txtIncidente.Text;
                 if (cmbAsignar.SelectedValue == "5")
                 {
-                    objServ.ser_Area = cmbArea.SelectedValue;
-                    objServ.ser_Equipo = cmbEquipo.SelectedValue;
+                    objServ.Ser_Area = cmbArea.SelectedValue;
+                    objServ.Ser_Equipo = cmbEquipo.SelectedValue;
                 }
 
                 // Call a helper method routine to save the file.
                 if (FileUploadFoto.HasFile)
                 {
                     SaveFile(FileUploadFoto.PostedFile);
-                    //objServ.ser_Num_Fotos = uploadedFiles.Count;
+                    //objServ.Ser_Num_Fotos = uploadedFiles.Count;
                 }
 
-                objServ.ser_FechaIngreso = DateTime.Now;
-                objServ.ser_FechaUltimoE = objServ.ser_FechaIngreso;
-                objServ.ser_DeptoQueAtiende = int.Parse(cmbAsignar.SelectedValue);
+                objServ.Ser_FechaIngreso = DateTime.Now;
+                objServ.Ser_FechaUltimoE = objServ.Ser_FechaIngreso;
+                objServ.Ser_DeptoQueAtiende = int.Parse(cmbAsignar.SelectedValue);
                 EnviarCorreo();
 
-                dcDatos.Servicio.InsertOnSubmit(objServ);
+                dcDatos.Servicios.InsertOnSubmit(objServ);
                 dcDatos.SubmitChanges();
                 CargarGrids();
 
@@ -271,62 +271,62 @@ namespace Tickets2
         {
             Servicio objServ = new Servicio();
 
-            var consultaNewID = from row in dcDatos.Servicio
+            var consultaNewID = from row in dcDatos.Servicios
                                 group row by true into s
                                 select new
                                 {
-                                    newID = s.Max(id => id.ser_ID)
+                                    newID = s.Max(id => id.Ser_ID)
                                 };
             try
             {
                 if (consultaNewID.First() != null)
-                    objServ.ser_ID = consultaNewID.First().newID + 1;
+                    objServ.Ser_ID = consultaNewID.First().newID + 1;
                 else
-                    objServ.ser_ID = 1;
+                    objServ.Ser_ID = 1;
             }
             catch
             {
-                objServ.ser_ID = 1;
+                objServ.Ser_ID = 1;
             }
 
 
-            Persona persona = this.dcDatos.Persona.Where<Persona>((Expression<Func<Persona, bool>>)(p => p.dep_ID == int.Parse(this.cmbAsignar.SelectedValue))).First<Persona>();
+            Persona persona = this.dcDatos.Personas.Where<Persona>((Expression<Func<Persona, bool>>)(p => p.Dep_ID == int.Parse(this.cmbAsignar.SelectedValue))).First<Persona>();
             MailMessage message = new MailMessage();
-            //message.To.Add(persona.per_Email);
+            //message.To.Add(persona.Per_Email);
             message.Subject = "Sistema de Tickets";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
-            if (this.objUser.Persona.per_copia != "" && this.objUser.Persona.per_copia != null)
+            if (this.objUser.Persona.Per_copia != "" && this.objUser.Persona.Per_copia != null)
             {
-                message.CC.Add(this.objUser.Persona.per_copia);
+                message.CC.Add(this.objUser.Persona.Per_copia);
             }
-            /*if (this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat == "Materia Prima")
+            /*if (this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat == "Materia Prima")
             {
                 message.CC.Add("fjcastrejon@mrlucky.com.mx, cmoreno@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre == "Vigilancia")
+            if (this.objUser.Persona.Per_Nombre == "Vigilancia")
             {
                 message.CC.Add("jcgarcia@mrlucky.com.mx");
             }
 
 
-            if (this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + " " + this.objUser.Persona.per_ApeMat == "JOSE MANUEL PRIETO RANGEL" || this.objUser.Persona.per_Nombre.Trim() + " " + this.objUser.Persona.per_ApePat.Trim() + " " + this.objUser.Persona.per_ApeMat.Trim() == "Jose Manuel Prieto Rangel")
+            if (this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + " " + this.objUser.Persona.Per_ApeMat == "JOSE MANUEL PRIETO RANGEL" || this.objUser.Persona.Per_Nombre.Trim() + " " + this.objUser.Persona.Per_ApePat.Trim() + " " + this.objUser.Persona.Per_ApeMat.Trim() == "Jose Manuel Prieto Rangel")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx, aaleman@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + " " + this.objUser.Persona.per_ApeMat == "HECTOR GUSTAVO CAMPA ALVARADO" || this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + " " + this.objUser.Persona.per_ApeMat == "Hector Gustavo Campa Alvarado")
+            if (this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + " " + this.objUser.Persona.Per_ApeMat == "HECTOR GUSTAVO CAMPA ALVARADO" || this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + " " + this.objUser.Persona.Per_ApeMat == "Hector Gustavo Campa Alvarado")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx, agarcia@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre == "ensaladas")
+            if (this.objUser.Persona.Per_Nombre == "ensaladas")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx, aaleman@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre == "fresco")
+            if (this.objUser.Persona.Per_Nombre == "fresco")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx, agarcia@mrlucky.com.mx");
             }
@@ -336,7 +336,7 @@ namespace Tickets2
                 message.To.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, jgalvan@mrlucky.com.mx, elizabeth@mrlucky.com.mx");
             if (this.cmbAsignar.SelectedItem.ToString().Trim() == "MANTENIMIENTO")
                 message.To.Add("mantenimiento@mrlucky.com.mx, aldosoto@mrlucky.com.mx, admin.mtto@mrlucky.com.mx");
-            string str = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + objServ.ser_ID.ToString() + "</td></tr><tr><td>Reporto: </td><td>" + this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + "</td></tr><tr><td>Descripcion: </td><td>" + this.txtIncidente.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+            string str = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + objServ.Ser_ID.ToString() + "</td></tr><tr><td>Reporto: </td><td>" + this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + "</td></tr><tr><td>Descripcion: </td><td>" + this.txtIncidente.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
             message.Body = str;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
@@ -397,12 +397,12 @@ namespace Tickets2
 
                 //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
                 //ESTE CON ESTATUS 2 (ASIGNADO) y 3(FINALIZADO)
-                Servicio objSerValida = (from s in dcDatos.Servicio
-                                         where s.ser_ID == ID_Servicio_Comentario
+                Servicio objSerValida = (from s in dcDatos.Servicios
+                                         where s.Ser_ID == ID_Servicio_Comentario
                                          select s).SingleOrDefault();
                 if (objSerValida != null)
                 {
-                    if (objSerValida.sere_ID == (int)enumServicioEstado.Solicitado)
+                    if (objSerValida.Sere_ID == (int)enumServicioEstado.Solicitado)
                     {
                         MessageBox.Show("El servicio " + ID_Servicio_Comentario.ToString()
                             + " tiene el estatus: Solicitado. Por lo que no se puede comentar.");
@@ -416,7 +416,7 @@ namespace Tickets2
                     return;
                 }
 
-                if (objSerValida.per_ID_Levanto != objUser.Persona.per_ID)
+                if (objSerValida.Per_ID_Levanto != objUser.Persona.Per_ID)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_Comentario.ToString()
                         + " no es uno de tus servicios solicitados.");
@@ -429,27 +429,27 @@ namespace Tickets2
 
                 //CALCULAR EL SIG. ID
                 var queryComentarUsu =
-                        from row in dcDatos.Comentario
+                        from row in dcDatos.Comentarios
                         group row by true into s
                         select new
                         {
-                            newID = s.Max(id => id.com_ID)
+                            newID = s.Max(id => id.Com_ID)
                         };
                 if (queryComentarUsu.First() != null)
-                    objComen.com_ID = queryComentarUsu.First().newID + 1;
+                    objComen.Com_ID = queryComentarUsu.First().newID + 1;
                 else
-                    objComen.com_ID = 1;
+                    objComen.Com_ID = 1;
 
-                objComen.ser_ID = ID_Servicio_Comentario;
-                objComen.com_Comentario = txtComentarioUsuario.Text;
-                objComen.com_FechaCom = DateTime.Now;
-                objComen.per_ID = objUser.per_ID;
+                objComen.Ser_ID = ID_Servicio_Comentario;
+                objComen.Com_Comentario = txtComentarioUsuario.Text;
+                objComen.Com_FechaCom = DateTime.Now;
+                objComen.Per_ID = objUser.Per_ID;
 
-                dcDatos.Comentario.InsertOnSubmit(objComen);
+                dcDatos.Comentarios.InsertOnSubmit(objComen);
                 dcDatos.SubmitChanges();
                 CargarGrids();
                 MessageBox.Show("Comentario ingresado correctamente.");
-                EnviarCorreoComentario(Convert.ToString(objSerValida.ser_Incidente), Convert.ToString(objSerValida.ser_Nombre_Atiende));
+                EnviarCorreoComentario(Convert.ToString(objSerValida.Ser_Incidente), Convert.ToString(objSerValida.Ser_Nombre_Atiende));
 
                 //limpiar caja
                 txtIdServicioUsuario.Text = "";
@@ -481,61 +481,61 @@ namespace Tickets2
         {
             Servicio objServ = new Servicio();
 
-            var consultaNewID = from row in dcDatos.Servicio
+            var consultaNewID = from row in dcDatos.Servicios
                                 group row by true into s
                                 select new
                                 {
-                                    newID = s.Max(id => id.ser_ID)
+                                    newID = s.Max(id => id.Ser_ID)
                                 };
             try
             {
                 if (consultaNewID.First() != null)
-                    objServ.ser_ID = consultaNewID.First().newID + 1;
+                    objServ.Ser_ID = consultaNewID.First().newID + 1;
                 else
-                    objServ.ser_ID = 1;
+                    objServ.Ser_ID = 1;
             }
             catch
             {
-                objServ.ser_ID = 1;
+                objServ.Ser_ID = 1;
             }
 
 
-            Persona persona = this.dcDatos.Persona.Where<Persona>((Expression<Func<Persona, bool>>)(p => p.dep_ID == int.Parse(this.cmbAsignar.SelectedValue))).First<Persona>();
+            Persona persona = this.dcDatos.Personas.Where<Persona>((Expression<Func<Persona, bool>>)(p => p.Dep_ID == int.Parse(this.cmbAsignar.SelectedValue))).First<Persona>();
             MailMessage message = new MailMessage();
-            //message.To.Add(persona.per_Email);
+            //message.To.Add(persona.Per_Email);
             message.Subject = "Sistema de Tickets - Respuesta Comentario";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
-            if (this.objUser.Persona.per_copia != "" && this.objUser.Persona.per_copia != null)
+            if (this.objUser.Persona.Per_copia != "" && this.objUser.Persona.Per_copia != null)
             {
-                message.CC.Add(this.objUser.Persona.per_copia);
+                message.CC.Add(this.objUser.Persona.Per_copia);
             }
-            /*if (this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat == "Materia Prima")
+            /*if (this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat == "Materia Prima")
             {
                 message.CC.Add("fjcastrejon@mrlucky.com.mx, cmoreno@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre == "Vigilancia")
+            if (this.objUser.Persona.Per_Nombre == "Vigilancia")
             {
                 message.CC.Add("jcgarcia@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre.Trim() + " " + this.objUser.Persona.per_ApePat.Trim() + " " + this.objUser.Persona.per_ApeMat.Trim() == "JOSE MANUEL PRIETO RANGEL" || this.objUser.Persona.per_Nombre.Trim() + " " + this.objUser.Persona.per_ApePat.Trim() + " " + this.objUser.Persona.per_ApeMat.Trim() == "Jose Manuel Prieto Rangel")
+            if (this.objUser.Persona.Per_Nombre.Trim() + " " + this.objUser.Persona.Per_ApePat.Trim() + " " + this.objUser.Persona.Per_ApeMat.Trim() == "JOSE MANUEL PRIETO RANGEL" || this.objUser.Persona.Per_Nombre.Trim() + " " + this.objUser.Persona.Per_ApePat.Trim() + " " + this.objUser.Persona.Per_ApeMat.Trim() == "Jose Manuel Prieto Rangel")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + " " + this.objUser.Persona.per_ApeMat == "HECTOR GUSTAVO CAMPA ALVARADO"  || this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + " " + this.objUser.Persona.per_ApeMat == "Hector Gustavo Campa Alvarado")
+            if (this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + " " + this.objUser.Persona.Per_ApeMat == "HECTOR GUSTAVO CAMPA ALVARADO"  || this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + " " + this.objUser.Persona.Per_ApeMat == "Hector Gustavo Campa Alvarado")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre == "ensaladas")
+            if (this.objUser.Persona.Per_Nombre == "ensaladas")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx");
             }
 
-            if (this.objUser.Persona.per_Nombre == "fresco")
+            if (this.objUser.Persona.Per_Nombre == "fresco")
             {
                 message.CC.Add("almacen@mrlucky.com.mx, pgonzalez@mrlucky.com.mx");
             }*/
@@ -544,7 +544,7 @@ namespace Tickets2
                 message.To.Add("sistemas@mrlucky.com.mx, ricardo.cortes@mrlucky.com.mx, jgalvan@mrlucky.com.mx, elizabeth@mrlucky.com.mx");
             if (this.cmbAsignar.SelectedItem.ToString().Trim() == "MANTENIMIENTO")
                 message.To.Add("mantenimiento@mrlucky.com.mx, aldosoto@mrlucky.com.mx, admin.mtto@mrlucky.com.mx");
-            string str = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioUsuario.Text.ToString() + "</td></tr><tr><td>Reporto: </td><td>" + this.objUser.Persona.per_Nombre + " " + this.objUser.Persona.per_ApePat + "</td></tr><tr><td>Descripcion: </td><td>" + incidencia + "</td></tr></tr><tr><td>Servicio Atendido Por: </td><td>" + atiende + "</td></tr></tr><tr><td>Comentario: </td><td>" + this.txtComentarioUsuario.Text + "</td></tr></table>";
+            string str = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioUsuario.Text.ToString() + "</td></tr><tr><td>Reporto: </td><td>" + this.objUser.Persona.Per_Nombre + " " + this.objUser.Persona.Per_ApePat + "</td></tr><tr><td>Descripcion: </td><td>" + incidencia + "</td></tr></tr><tr><td>Servicio Atendido Por: </td><td>" + atiende + "</td></tr></tr><tr><td>Comentario: </td><td>" + this.txtComentarioUsuario.Text + "</td></tr></table>";
             message.Body = str;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
@@ -573,20 +573,20 @@ namespace Tickets2
             ///////////////////////////////////////////////////////////////////////
             //                  SOLICITADOS
             //////////////////////////////////////////////////////////////////////
-            var consulta1 = from s in dcDatos.Servicio
-                            join pl in dcDatos.Persona on s.per_ID_Levanto equals pl.per_ID
-                            join dep in dcDatos.Departamento on s.ser_DeptoQueAtiende equals dep.dep_ID
-                            where s.sere_ID == (int)enumServicioEstado.Solicitado && pl.per_ID == objUser.Persona.per_ID
-                            orderby s.ser_ID descending
+            var consulta1 = from s in dcDatos.Servicios
+                            join pl in dcDatos.Personas on s.Per_ID_Levanto equals pl.Per_ID
+                            join dep in dcDatos.Departamentos on s.Ser_DeptoQueAtiende equals dep.Dep_ID
+                            where s.Sere_ID == (int)enumServicioEstado.Solicitado && pl.Per_ID == objUser.Persona.Per_ID
+                            orderby s.Ser_ID descending
                             select new
                             {
-                                ID = s.ser_ID,
-                                Fecha = s.ser_FechaIngreso,
-                                Nombre = pl.per_ApePat + " " + pl.per_Nombre,
-                                Solicitado_A = dep.dep_Departamento,
-                                Area = s.ser_Area,
-                                Equipo = s.ser_Equipo,
-                                Incidente = s.ser_Incidente,
+                                ID = s.Ser_ID,
+                                Fecha = s.Ser_FechaIngreso,
+                                Nombre = pl.Per_ApePat + " " + pl.Per_Nombre,
+                                Solicitado_A = dep.Dep_Departamento,
+                                Area = s.Ser_Area,
+                                Equipo = s.Ser_Equipo,
+                                Incidente = s.Ser_Incidente,
                                 Estado = "Solicitado"
                             };
 
@@ -596,7 +596,7 @@ namespace Tickets2
             //----------------------------------------------------------------------------------
             //                  ASIGNADOS
             //----------------------------------------------------------------------------------
-            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(objUser.per_ID, 0);
+            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(objUser.Per_ID, 0);
 
             dgAbiertos.DataSource = consulta2;
             dgAbiertos.DataBind();
@@ -605,7 +605,7 @@ namespace Tickets2
             //                  FINALIZADOS
             //----------------------------------------------------------------------------------
 
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(objUser.per_ID, 0);
+            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(objUser.Per_ID, 0);
             dgFinalizados.DataSource = consulta3;
             dgFinalizados.DataBind();
 
@@ -639,10 +639,10 @@ namespace Tickets2
                 return;
             }
             //Validar si el password actual del usuario coincide con el ingresado en la caja de texto
-            Usuario objUsuValida = (from s in dcDatos.Usuario
-                                    where s.usu_ID == objUser.usu_ID
+            Usuario objUsuValida = (from s in dcDatos.Usuarios
+                                    where s.Usu_ID == objUser.Usu_ID
                                     select s).SingleOrDefault();
-            if (objUsuValida.usu_Password != txtContraAct.Text)
+            if (objUsuValida.Usu_Password != txtContraAct.Text)
             {
                 MessageBox.Show("Contraseña Actual incorrecta");
                 //limpiar caja
@@ -661,11 +661,11 @@ namespace Tickets2
             try
             {
                 Usuario queryCambiarContra =
-                    (from ord in dcDatos.Usuario
-                     where ord.usu_ID == objUser.usu_ID
+                    (from ord in dcDatos.Usuarios
+                     where ord.Usu_ID == objUser.Usu_ID
                      select ord).SingleOrDefault();
 
-                queryCambiarContra.usu_Password = txtNuevaContra.Text;
+                queryCambiarContra.Usu_Password = txtNuevaContra.Text;
                 dcDatos.SubmitChanges();
                 MessageBox.Show("Nueva Contraseñan guardada");
             }
@@ -723,7 +723,7 @@ namespace Tickets2
 
         protected void dgFinalizados_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(objUser.per_ID, 0);
+            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(objUser.Per_ID, 0);
 
             dgFinalizados.PageIndex = e.NewPageIndex;
 

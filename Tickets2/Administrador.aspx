@@ -188,8 +188,8 @@
                             <asp:BoundField HeaderText="Fecha" DataField="Fecha_de_Ingreso"></asp:BoundField>
                             <asp:BoundField HeaderText="Nombre" DataField="Nombre"></asp:BoundField>
                             <asp:BoundField HeaderText="Solicitado A" DataField="Asignado_A"></asp:BoundField>
-                            <asp:BoundField HeaderText="Area" DataField="Area"></asp:BoundField>
-                            <asp:BoundField HeaderText="Equipo" DataField="Equipo"></asp:BoundField>
+                            <%--<asp:BoundField HeaderText="Area" DataField="Area"></asp:BoundField>
+                            <asp:BoundField HeaderText="Equipo" DataField="Equipo"></asp:BoundField>--%>
                             <asp:BoundField HeaderText="Incidente" DataField="Incidente"></asp:BoundField>
                             <asp:BoundField HeaderText="Estado" DataField="Estado"></asp:BoundField>
                             <asp:TemplateField HeaderText="Foto">
@@ -427,8 +427,8 @@
                                 <ItemStyle CssClass="ID"></ItemStyle>
                             </asp:BoundField>
                             <asp:BoundField HeaderText="Nombre" DataField="Nombre"></asp:BoundField>
-                            <asp:BoundField HeaderText="Area" DataField="Area"></asp:BoundField>
-                            <asp:BoundField HeaderText="Equipo" DataField="Equipo"></asp:BoundField>
+                            <%--<asp:BoundField HeaderText="Area" DataField="Area"></asp:BoundField>
+                            <asp:BoundField HeaderText="Equipo" DataField="Equipo"></asp:BoundField>--%>
                             <asp:BoundField HeaderText="Incidente" DataField="Incidente"></asp:BoundField>
                             <asp:BoundField HeaderText="Comentarios" DataField="Comentarios"></asp:BoundField>
                             <asp:BoundField HeaderText="Responsable" DataField="Asignado_A"></asp:BoundField>

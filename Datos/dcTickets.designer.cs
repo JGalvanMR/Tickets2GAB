@@ -22,7 +22,8 @@ namespace Datos
 	using System;
 	
 	
-	public partial class Tickets2 : System.Data.Linq.DataContext
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Tickets2")]
+	public partial class dcTicketsDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -67,31 +68,31 @@ namespace Datos
     partial void DeleteUsuario(Usuario instance);
     #endregion
 		
-		public Tickets2() : 
+		public dcTicketsDataContext() : 
 				base(global::Datos.Properties.Settings.Default.Tickets2ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public Tickets2(string connection) : 
+		public dcTicketsDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public Tickets2(System.Data.IDbConnection connection) : 
+		public dcTicketsDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public Tickets2(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public dcTicketsDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public Tickets2(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public dcTicketsDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -201,13 +202,6 @@ namespace Datos
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosAsignados")]
-		public ISingleResult<sp_Get_ServiciosAsignadosResult> sp_Get_ServiciosAsignados([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_USER, dEP_ID);
-			return ((ISingleResult<sp_Get_ServiciosAsignadosResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosAsignadosM")]
 		public ISingleResult<sp_Get_ServiciosAsignadosMResult> sp_Get_ServiciosAsignadosM([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
 		{
@@ -229,13 +223,6 @@ namespace Datos
 			return ((ISingleResult<sp_Get_ServiciosFinalizadosMResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosSolicitados")]
-		public ISingleResult<sp_Get_ServiciosSolicitadosResult> sp_Get_ServiciosSolicitados([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_USER, dEP_ID);
-			return ((ISingleResult<sp_Get_ServiciosSolicitadosResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosSolicitadosM")]
 		public ISingleResult<sp_Get_ServiciosSolicitadosMResult> sp_Get_ServiciosSolicitadosM([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
 		{
@@ -255,6 +242,20 @@ namespace Datos
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), fol, page, pageSize, filtro, tipo);
 			return ((ISingleResult<spTicketsConsultaMantoResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosAsignados")]
+		public ISingleResult<sp_Get_ServiciosAsignadosResult> sp_Get_ServiciosAsignados([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_USER, dEP_ID);
+			return ((ISingleResult<sp_Get_ServiciosAsignadosResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosSolicitados")]
+		public ISingleResult<sp_Get_ServiciosSolicitadosResult> sp_Get_ServiciosSolicitados([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_USER, dEP_ID);
+			return ((ISingleResult<sp_Get_ServiciosSolicitadosResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -2963,158 +2964,6 @@ namespace Datos
 		}
 	}
 	
-	public partial class sp_Get_ServiciosAsignadosResult
-	{
-		
-		private int _ID;
-		
-		private string _Nombre;
-		
-		private string _Incidente;
-		
-		private string _Comentarios;
-		
-		private string _Asignado_A;
-		
-		private System.Nullable<System.DateTime> _Fecha_Estimada_Fin;
-		
-		private System.DateTime _Fecha_Ingreso;
-		
-		private System.DateTime _Ultimo_Estado;
-		
-		public sp_Get_ServiciosAsignadosResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this._ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(602) NOT NULL", CanBeNull=false)]
-		public string Nombre
-		{
-			get
-			{
-				return this._Nombre;
-			}
-			set
-			{
-				if ((this._Nombre != value))
-				{
-					this._Nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Incidente", DbType="VarChar(1000) NOT NULL", CanBeNull=false)]
-		public string Incidente
-		{
-			get
-			{
-				return this._Incidente;
-			}
-			set
-			{
-				if ((this._Incidente != value))
-				{
-					this._Incidente = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comentarios", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Comentarios
-		{
-			get
-			{
-				return this._Comentarios;
-			}
-			set
-			{
-				if ((this._Comentarios != value))
-				{
-					this._Comentarios = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Asignado_A", DbType="VarChar(50)")]
-		public string Asignado_A
-		{
-			get
-			{
-				return this._Asignado_A;
-			}
-			set
-			{
-				if ((this._Asignado_A != value))
-				{
-					this._Asignado_A = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha_Estimada_Fin", DbType="DateTime")]
-		public System.Nullable<System.DateTime> Fecha_Estimada_Fin
-		{
-			get
-			{
-				return this._Fecha_Estimada_Fin;
-			}
-			set
-			{
-				if ((this._Fecha_Estimada_Fin != value))
-				{
-					this._Fecha_Estimada_Fin = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha_Ingreso", DbType="DateTime NOT NULL")]
-		public System.DateTime Fecha_Ingreso
-		{
-			get
-			{
-				return this._Fecha_Ingreso;
-			}
-			set
-			{
-				if ((this._Fecha_Ingreso != value))
-				{
-					this._Fecha_Ingreso = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ultimo_Estado", DbType="DateTime NOT NULL")]
-		public System.DateTime Ultimo_Estado
-		{
-			get
-			{
-				return this._Ultimo_Estado;
-			}
-			set
-			{
-				if ((this._Ultimo_Estado != value))
-				{
-					this._Ultimo_Estado = value;
-				}
-			}
-		}
-	}
-	
 	public partial class sp_Get_ServiciosAsignadosMResult
 	{
 		
@@ -3715,122 +3564,6 @@ namespace Datos
 		}
 	}
 	
-	public partial class sp_Get_ServiciosSolicitadosResult
-	{
-		
-		private int _ID;
-		
-		private System.DateTime _Fecha_de_Ingreso;
-		
-		private string _Nombre;
-		
-		private string _Asignado_A;
-		
-		private string _Incidente;
-		
-		private string _Estado;
-		
-		public sp_Get_ServiciosSolicitadosResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this._ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Fecha de Ingreso]", Storage="_Fecha_de_Ingreso", DbType="DateTime NOT NULL")]
-		public System.DateTime Fecha_de_Ingreso
-		{
-			get
-			{
-				return this._Fecha_de_Ingreso;
-			}
-			set
-			{
-				if ((this._Fecha_de_Ingreso != value))
-				{
-					this._Fecha_de_Ingreso = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(602) NOT NULL", CanBeNull=false)]
-		public string Nombre
-		{
-			get
-			{
-				return this._Nombre;
-			}
-			set
-			{
-				if ((this._Nombre != value))
-				{
-					this._Nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Asignado A]", Storage="_Asignado_A", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Asignado_A
-		{
-			get
-			{
-				return this._Asignado_A;
-			}
-			set
-			{
-				if ((this._Asignado_A != value))
-				{
-					this._Asignado_A = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Incidente", DbType="VarChar(1000) NOT NULL", CanBeNull=false)]
-		public string Incidente
-		{
-			get
-			{
-				return this._Incidente;
-			}
-			set
-			{
-				if ((this._Incidente != value))
-				{
-					this._Incidente = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string Estado
-		{
-			get
-			{
-				return this._Estado;
-			}
-			set
-			{
-				if ((this._Estado != value))
-				{
-					this._Estado = value;
-				}
-			}
-		}
-	}
-	
 	public partial class sp_Get_ServiciosSolicitadosMResult
 	{
 		
@@ -4030,6 +3763,274 @@ namespace Datos
 				if ((this._Total != value))
 				{
 					this._Total = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_Get_ServiciosAsignadosResult
+	{
+		
+		private int _ID;
+		
+		private string _Nombre;
+		
+		private string _Incidente;
+		
+		private string _Comentarios;
+		
+		private string _Asignado_A;
+		
+		private System.Nullable<System.DateTime> _Fecha_Estimada_Fin;
+		
+		private System.DateTime _Fecha_Ingreso;
+		
+		private System.DateTime _Ultimo_Estado;
+		
+		public sp_Get_ServiciosAsignadosResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this._ID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(602) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Incidente", DbType="VarChar(1000) NOT NULL", CanBeNull=false)]
+		public string Incidente
+		{
+			get
+			{
+				return this._Incidente;
+			}
+			set
+			{
+				if ((this._Incidente != value))
+				{
+					this._Incidente = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comentarios", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Comentarios
+		{
+			get
+			{
+				return this._Comentarios;
+			}
+			set
+			{
+				if ((this._Comentarios != value))
+				{
+					this._Comentarios = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Asignado_A", DbType="VarChar(50)")]
+		public string Asignado_A
+		{
+			get
+			{
+				return this._Asignado_A;
+			}
+			set
+			{
+				if ((this._Asignado_A != value))
+				{
+					this._Asignado_A = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha_Estimada_Fin", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Fecha_Estimada_Fin
+		{
+			get
+			{
+				return this._Fecha_Estimada_Fin;
+			}
+			set
+			{
+				if ((this._Fecha_Estimada_Fin != value))
+				{
+					this._Fecha_Estimada_Fin = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha_Ingreso", DbType="DateTime NOT NULL")]
+		public System.DateTime Fecha_Ingreso
+		{
+			get
+			{
+				return this._Fecha_Ingreso;
+			}
+			set
+			{
+				if ((this._Fecha_Ingreso != value))
+				{
+					this._Fecha_Ingreso = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ultimo_Estado", DbType="DateTime NOT NULL")]
+		public System.DateTime Ultimo_Estado
+		{
+			get
+			{
+				return this._Ultimo_Estado;
+			}
+			set
+			{
+				if ((this._Ultimo_Estado != value))
+				{
+					this._Ultimo_Estado = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_Get_ServiciosSolicitadosResult
+	{
+		
+		private int _ID;
+		
+		private System.DateTime _Fecha_de_Ingreso;
+		
+		private string _Nombre;
+		
+		private string _Asignado_A;
+		
+		private string _Incidente;
+		
+		private string _Estado;
+		
+		public sp_Get_ServiciosSolicitadosResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this._ID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Fecha de Ingreso]", Storage="_Fecha_de_Ingreso", DbType="DateTime NOT NULL")]
+		public System.DateTime Fecha_de_Ingreso
+		{
+			get
+			{
+				return this._Fecha_de_Ingreso;
+			}
+			set
+			{
+				if ((this._Fecha_de_Ingreso != value))
+				{
+					this._Fecha_de_Ingreso = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(602) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Asignado A]", Storage="_Asignado_A", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Asignado_A
+		{
+			get
+			{
+				return this._Asignado_A;
+			}
+			set
+			{
+				if ((this._Asignado_A != value))
+				{
+					this._Asignado_A = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Incidente", DbType="VarChar(1000) NOT NULL", CanBeNull=false)]
+		public string Incidente
+		{
+			get
+			{
+				return this._Incidente;
+			}
+			set
+			{
+				if ((this._Incidente != value))
+				{
+					this._Incidente = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string Estado
+		{
+			get
+			{
+				return this._Estado;
+			}
+			set
+			{
+				if ((this._Estado != value))
+				{
+					this._Estado = value;
 				}
 			}
 		}

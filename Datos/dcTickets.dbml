@@ -156,22 +156,6 @@
       <Column Name="Ultimo_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.sp_Get_ServiciosFinalizados" Method="sp_Get_ServiciosFinalizados">
-    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
-    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="sp_Get_ServiciosFinalizadosResult">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Usuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
-      <Column Name="Incidente" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
-      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Asignado_A" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="[Fecha de último Estado]" Member="Fecha_de_último_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Duración" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.sp_Get_ServiciosFinalizadosM" Method="sp_Get_ServiciosFinalizadosM">
     <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
     <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
@@ -248,6 +232,23 @@
       <Column Name="[Asignado A]" Member="Asignado_A" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Incidente" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
       <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.sp_Get_ServiciosFinalizados" Method="sp_Get_ServiciosFinalizados">
+    <Parameter Name="ID_USER" Parameter="iD_USER" Type="System.Int32" DbType="Int" />
+    <Parameter Name="DEP_ID" Parameter="dEP_ID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="sp_Get_ServiciosFinalizadosResult">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Usuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(602) NOT NULL" CanBeNull="false" />
+      <Column Name="Incidente" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="Comentarios" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Asignado_A" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="[Fecha de Ingreso]" Member="Fecha_de_Ingreso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="[Fecha de último Estado]" Member="Fecha_de_último_Estado" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Duración" Type="System.String" DbType="VarChar(36)" CanBeNull="true" />
+      <Column Name="CumplimientoCalidad" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>

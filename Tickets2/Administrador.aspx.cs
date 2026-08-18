@@ -415,12 +415,20 @@ namespace Tickets2
                                    select s).SingleOrDefault();
                 if (objSer != null)
                 {
-                    string[] fecha = datetimepicker4.Text.Split('/');
+                    // Solución: Validación y conversión segura de la fecha
+                    DateTime fechaEstimada;
+                    if (!DateTime.TryParse(datetimepicker4.Text, out fechaEstimada))
+                    {
+                        MessageBox.Show("El formato de la fecha estimada no es válido.");
+                        datetimepicker4.Focus();
+                        return;
+                    }
 
                     objSer.Ser_Nombre_Atiende = cmbResponsableServicioSis.SelectedValue;
                     objSer.Ser_FechaUltimoE = DateTime.Now;
                     objSer.Sere_ID = (int)enumServicioEstado.Abierto;
-                    objSer.Ser_FechaEstimadaFin = Convert.ToDateTime(fecha[1] + "/" + fecha[0] + "/" + fecha[2]);
+                    objSer.Ser_FechaEstimadaFin = fechaEstimada; // Asignación directa
+
                     dcDatos.SubmitChanges();
                     //Actualizar grid
                     CargarGridSistemas();

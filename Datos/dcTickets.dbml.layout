@@ -80,7 +80,7 @@
         <elementListCompartment Id="b0e398fd-30b9-4882-bbfb-a4d8e98ee0c9" absoluteBounds="6.265, 9.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(4.5 : 6.25); (4.5 : 5.47199625651042); (6.25 : 5.47199625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.5 : 6.25); (4.5 : 5.47199625651042); (4.94791916666667 : 5.47199625651042 : JumpStart); (5.11458583333333 : 5.47199625651042 : JumpEnd); (6.25 : 5.47199625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/dcTicketsDataContext/Persona/Persona_Administrador" />
       <nodes>
         <classShapeMoniker Id="7c6a9338-6c64-45aa-8aae-47bc6d9d6b74" />
@@ -108,7 +108,7 @@
         <classShapeMoniker Id="7c6a9338-6c64-45aa-8aae-47bc6d9d6b74" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 7.19032148632813); (3.25 : 7.19032148632813); (3.25 : 6); (4.41666666666667 : 6 : JumpStart); (4.58333333333333 : 6 : JumpEnd); (6 : 6); (6 : 6.375); (9.718748 : 6.375); (9.718748 : 5.25160970052083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 7.19032148632813); (3.25 : 7.19032148632813); (3.25 : 6); (3.88541416666667 : 6 : JumpStart); (4.05208083333333 : 6 : JumpEnd); (4.41666666666667 : 6 : JumpStart); (4.58333333333333 : 6 : JumpEnd); (4.94791916666667 : 6 : JumpStart); (5.11458583333333 : 6 : JumpEnd); (6 : 6); (6 : 6.375); (9.718748 : 6.375); (9.718748 : 5.25160970052083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/dcTicketsDataContext/Departamento/Departamento_Servicio" />
       <nodes>
         <classShapeMoniker Id="489f2da0-542c-4b4b-904e-5eaede9a615e" />
@@ -122,7 +122,7 @@
         <classShapeMoniker Id="f400e172-c33f-4092-8598-d34229cde6d6" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(3.9687475 : 6.25); (3.9687475 : 4.47157598632812); (4.94791916666667 : 4.47157598632812 : JumpStart); (5.11458583333333 : 4.47157598632812 : JumpEnd); (9.25 : 4.47157598632812)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(3.9687475 : 6.25); (3.9687475 : 4.47157598632812); (9.25 : 4.47157598632812)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/dcTicketsDataContext/Persona/Persona_Servicio1" />
       <nodes>
         <classShapeMoniker Id="7c6a9338-6c64-45aa-8aae-47bc6d9d6b74" />

@@ -15,6 +15,33 @@ namespace Tickets2
     {
 
         /// <summary>
+        /// Control ScriptManager1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+
+        /// <summary>
+        /// Control UpdateProgressAbiertos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress UpdateProgressAbiertos;
+
+        /// <summary>
+        /// Control UpdateProgressFinalizados.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdateProgress UpdateProgressFinalizados;
+
+        /// <summary>
         /// Control btnSalir.
         /// </summary>
         /// <remarks>
@@ -231,6 +258,15 @@ namespace Tickets2
         protected global::System.Web.UI.WebControls.LinkButton BtnServicioFinSis;
 
         /// <summary>
+        /// Control UpdatePanelAbiertos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelAbiertos;
+
+        /// <summary>
         /// Control dgAbiertosSis.
         /// </summary>
         /// <remarks>
@@ -238,6 +274,15 @@ namespace Tickets2
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView dgAbiertosSis;
+
+        /// <summary>
+        /// Control UpdatePanelFinalizados.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanelFinalizados;
 
         /// <summary>
         /// Control dgFinalizadosxis.

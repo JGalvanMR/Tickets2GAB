@@ -351,12 +351,12 @@
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>
                             <asp:BoundField HeaderText="Nombre" DataField="Nombre"></asp:BoundField>
-                            <asp:BoundField HeaderText="Area" DataField="Area"></asp:BoundField>
-                            <asp:BoundField HeaderText="Equipo" DataField="Equipo"></asp:BoundField>
+                            <%--<asp:BoundField HeaderText="Area" DataField="Area"></asp:BoundField>--%>
+                            <%--<asp:BoundField HeaderText="Equipo" DataField="Equipo"></asp:BoundField>--%>
                             <asp:BoundField HeaderText="Incidente" DataField="Incidente"></asp:BoundField>
                             <asp:BoundField HeaderText="Comentarios" DataField="Comentarios"></asp:BoundField>
                             <asp:BoundField HeaderText="Asignado a" DataField="Asignado_A"></asp:BoundField>
-                            <asp:BoundField HeaderText="Responsable" DataField="Responsable"></asp:BoundField>
+                            <%--<asp:BoundField HeaderText="Responsable" DataField="Responsable"></asp:BoundField>--%>
                             <asp:BoundField HeaderText="Fecha Ingreso" DataField="Fecha_Ingreso"></asp:BoundField>
                             <asp:BoundField HeaderText="Fecha Estimada Fin" DataField="Fecha_Estimada_Fin"></asp:BoundField>
                             <asp:TemplateField HeaderText="Foto">

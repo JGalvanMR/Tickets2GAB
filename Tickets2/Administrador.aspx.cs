@@ -24,6 +24,7 @@ namespace Tickets2
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Inicializar el DataContext en cada solicitud
             dcDatos = new dcTicketsDataContext();
 
             if (Session["objAdmin"] != null)
@@ -33,7 +34,7 @@ namespace Tickets2
                 if (!IsPostBack)
                 {
                     //----------------------------------------------------------------------------------
-                    //                  CARGAR COMBO DEL ID DEL DEPARTAMENTO 
+                    // CARGAR COMBO DEL ID DEL DEPARTAMENTO 
                     //----------------------------------------------------------------------------------
                     var consultaDeptoID = from d in dcDatos.Departamentos
                                           select new
@@ -50,9 +51,8 @@ namespace Tickets2
                         cmbDepto.SelectedIndex = -1;
 
                     //--------------------------------------------------------------------------------
-                    //                  CARGAR COMBO DEL ID DEL ENCARGADO DE ATENDER EL  SERVICIO
+                    // CARGAR COMBO DEL ID DEL ENCARGADO DE ATENDER EL SERVICIO
                     //---------------------------------------------------------------------------------
-
                     var consultaAsignarRespon = from d in dcDatos.Personas
                                                 where d.Dep_ID == 1 && d.Per_IsActivo == true
                                                 select new
@@ -66,18 +66,45 @@ namespace Tickets2
 
                     if (cmbResponsableServicioSis.Items.Count > 0)
                         cmbResponsableServicioSis.SelectedIndex = -1;
-
-                    //-------------------------------------------------------------------
-                    //-----------CARGAR GRIDS--------------------------------------
-                    CargarGridSistemas();
                 }
+
+                if (!IsPostBack)
+                {
+                    // Cargar datos iniciales
+                    CargarServiciosFinalizados();
+                    CargarServiciosAsignados();
+                }
+                else
+                {
+                    // En postback, verificar si hay búsqueda guardada
+                    string searchTerm = Request.Form["globalSearchFinalizados"];
+                    if (!string.IsNullOrEmpty(searchTerm))
+                    {
+                        // El search se manejará del lado del cliente con fancyTable
+                    }
+                }
+                // Cargar el grid tanto en la carga inicial como en postbacks 
+                // para evitar que el GridView pierda su referencia de datos.
+                CargarGridSistemas();
             }
             else
             {
                 Response.Redirect("PaginaLogin.aspx");
             }
         }
+        private void CargarServiciosFinalizados()
+        {
+            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+            dgFinalizadosxis.DataSource = consulta3;
+            dgFinalizadosxis.DataBind();
+        }
 
+        private void CargarServiciosAsignados()
+        {
+            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+            dgAbiertosSis.DataSource = consulta2;
+            dgAbiertosSis.DataBind();
+        }
         protected void btnSalir_Click(object sender, EventArgs e)
         {
             Session["objAdmin"] = null;
@@ -749,25 +776,74 @@ namespace Tickets2
 
         private void CargarGridSistemas()
         {
-            var consulta1 = dcDatos.sp_Get_ServiciosSolicitados(0, 1);
+            var consulta1 = dcDatos.sp_Get_ServiciosSolicitados(0, 1).ToList();
             dgSolicitados.DataSource = consulta1;
             dgSolicitados.DataBind();
 
-            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1);
+            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
             dgAbiertosSis.DataSource = consulta2;
             dgAbiertosSis.DataBind();
 
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1);
+            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
             dgFinalizadosxis.DataSource = consulta3;
             dgFinalizadosxis.DataBind();
         }
 
+        protected void dgFinalizadosSis_PageIndexChangingLEGACY(object sender, GridViewPageEventArgs e)
+        {
+            try
+            {
+                dgFinalizadosxis.PageIndex = e.NewPageIndex;
+                var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+                dgFinalizadosxis.DataSource = consulta3;
+                dgFinalizadosxis.DataBind();
+            }
+            catch (Exception ex)
+            {
+                // Manejar error si es necesario
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert",
+                    "alert('Error al cargar la página: " + ex.Message + "');", true);
+            }
+        }
+
+        protected void dgAbiertosSis_PageIndexChangingLEGACY(object sender, GridViewPageEventArgs e)
+        {
+            try
+            {
+                dgAbiertosSis.PageIndex = e.NewPageIndex;
+                var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+                dgAbiertosSis.DataSource = consulta2;
+                dgAbiertosSis.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert",
+                    "alert('Error al cargar la página: " + ex.Message + "');", true);
+            }
+        }
+
         protected void dgFinalizadosSis_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1);
             dgFinalizadosxis.PageIndex = e.NewPageIndex;
+
+            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+
             dgFinalizadosxis.DataSource = consulta3;
             dgFinalizadosxis.DataBind();
+
+            UpdatePanelFinalizados.Update();
+        }
+
+        protected void dgAbiertosSis_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            dgAbiertosSis.PageIndex = e.NewPageIndex;
+
+            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+
+            dgAbiertosSis.DataSource = consulta2;
+            dgAbiertosSis.DataBind();
+
+            UpdatePanelAbiertos.Update();
         }
 
         protected void btnfotofin_Click(object sender, EventArgs e)

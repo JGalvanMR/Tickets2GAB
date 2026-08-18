@@ -736,7 +736,8 @@
                                                     <ItemStyle CssClass="text-center col-cumplimiento" />
                                                     <ItemTemplate>
                                                         <i class='<%# Eval("CumplimientoCalidad") %> cumplimiento-icono'
-                                                            data-toggle="tooltip" title="Evaluación del servicio"></i>
+                                                            data-toggle="tooltip"
+                                                            title='Promedio: <%# Eval("CumplimientoPromedio") %>'></i>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>

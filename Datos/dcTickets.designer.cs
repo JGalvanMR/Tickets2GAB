@@ -216,13 +216,6 @@ namespace Datos
 			return ((ISingleResult<sp_Get_ServiciosAsignadosMResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosFinalizados")]
-		public ISingleResult<sp_Get_ServiciosFinalizadosResult> sp_Get_ServiciosFinalizados([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_USER, dEP_ID);
-			return ((ISingleResult<sp_Get_ServiciosFinalizadosResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosFinalizadosM")]
 		public ISingleResult<sp_Get_ServiciosFinalizadosMResult> sp_Get_ServiciosFinalizadosM([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
 		{
@@ -256,6 +249,13 @@ namespace Datos
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), fol, page, pageSize, filtro, tipo);
 			return ((ISingleResult<spTicketsConsultaMantoResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.sp_Get_ServiciosFinalizados")]
+		public ISingleResult<sp_Get_ServiciosFinalizadosResult> sp_Get_ServiciosFinalizados([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USER", DbType="Int")] System.Nullable<int> iD_USER, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="DEP_ID", DbType="Int")] System.Nullable<int> dEP_ID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_USER, dEP_ID);
+			return ((ISingleResult<sp_Get_ServiciosFinalizadosResult>)(result.ReturnValue));
 		}
 	}
 	
@@ -3304,212 +3304,6 @@ namespace Datos
 		}
 	}
 	
-	public partial class sp_Get_ServiciosFinalizadosResult
-	{
-		
-		private int _ID;
-		
-		private int _Usuario;
-		
-		private string _Nombre;
-		
-		private string _Incidente;
-		
-		private string _Comentarios;
-		
-		private string _Asignado_A;
-		
-		private string _Estado;
-		
-		private System.DateTime _Fecha_de_Ingreso;
-		
-		private System.DateTime _Fecha_de_último_Estado;
-		
-		private string _Duración;
-		
-		private string _CumplimientoCalidad;
-		
-		public sp_Get_ServiciosFinalizadosResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
-		public int ID
-		{
-			get
-			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this._ID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Usuario", DbType="Int NOT NULL")]
-		public int Usuario
-		{
-			get
-			{
-				return this._Usuario;
-			}
-			set
-			{
-				if ((this._Usuario != value))
-				{
-					this._Usuario = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(602) NOT NULL", CanBeNull=false)]
-		public string Nombre
-		{
-			get
-			{
-				return this._Nombre;
-			}
-			set
-			{
-				if ((this._Nombre != value))
-				{
-					this._Nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Incidente", DbType="VarChar(200)")]
-		public string Incidente
-		{
-			get
-			{
-				return this._Incidente;
-			}
-			set
-			{
-				if ((this._Incidente != value))
-				{
-					this._Incidente = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comentarios", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Comentarios
-		{
-			get
-			{
-				return this._Comentarios;
-			}
-			set
-			{
-				if ((this._Comentarios != value))
-				{
-					this._Comentarios = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Asignado_A", DbType="VarChar(50)")]
-		public string Asignado_A
-		{
-			get
-			{
-				return this._Asignado_A;
-			}
-			set
-			{
-				if ((this._Asignado_A != value))
-				{
-					this._Asignado_A = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string Estado
-		{
-			get
-			{
-				return this._Estado;
-			}
-			set
-			{
-				if ((this._Estado != value))
-				{
-					this._Estado = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Fecha de Ingreso]", Storage="_Fecha_de_Ingreso", DbType="DateTime NOT NULL")]
-		public System.DateTime Fecha_de_Ingreso
-		{
-			get
-			{
-				return this._Fecha_de_Ingreso;
-			}
-			set
-			{
-				if ((this._Fecha_de_Ingreso != value))
-				{
-					this._Fecha_de_Ingreso = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Fecha de último Estado]", Storage="_Fecha_de_último_Estado", DbType="DateTime NOT NULL")]
-		public System.DateTime Fecha_de_último_Estado
-		{
-			get
-			{
-				return this._Fecha_de_último_Estado;
-			}
-			set
-			{
-				if ((this._Fecha_de_último_Estado != value))
-				{
-					this._Fecha_de_último_Estado = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Duración", DbType="VarChar(36)")]
-		public string Duración
-		{
-			get
-			{
-				return this._Duración;
-			}
-			set
-			{
-				if ((this._Duración != value))
-				{
-					this._Duración = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CumplimientoCalidad", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
-		public string CumplimientoCalidad
-		{
-			get
-			{
-				return this._CumplimientoCalidad;
-			}
-			set
-			{
-				if ((this._CumplimientoCalidad != value))
-				{
-					this._CumplimientoCalidad = value;
-				}
-			}
-		}
-	}
-	
 	public partial class sp_Get_ServiciosFinalizadosMResult
 	{
 		
@@ -4049,6 +3843,230 @@ namespace Datos
 				if ((this._Total != value))
 				{
 					this._Total = value;
+				}
+			}
+		}
+	}
+	
+	public partial class sp_Get_ServiciosFinalizadosResult
+	{
+		
+		private int _ID;
+		
+		private int _Usuario;
+		
+		private string _Nombre;
+		
+		private string _Incidente;
+		
+		private string _Comentarios;
+		
+		private string _Asignado_A;
+		
+		private string _Estado;
+		
+		private System.DateTime _Fecha_de_Ingreso;
+		
+		private System.DateTime _Fecha_de_último_Estado;
+		
+		private string _Duración;
+		
+		private double _CumplimientoPromedio;
+		
+		private string _CumplimientoCalidad;
+		
+		public sp_Get_ServiciosFinalizadosResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="Int NOT NULL")]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this._ID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Usuario", DbType="Int NOT NULL")]
+		public int Usuario
+		{
+			get
+			{
+				return this._Usuario;
+			}
+			set
+			{
+				if ((this._Usuario != value))
+				{
+					this._Usuario = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(602) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Incidente", DbType="VarChar(200)")]
+		public string Incidente
+		{
+			get
+			{
+				return this._Incidente;
+			}
+			set
+			{
+				if ((this._Incidente != value))
+				{
+					this._Incidente = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comentarios", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Comentarios
+		{
+			get
+			{
+				return this._Comentarios;
+			}
+			set
+			{
+				if ((this._Comentarios != value))
+				{
+					this._Comentarios = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Asignado_A", DbType="VarChar(50)")]
+		public string Asignado_A
+		{
+			get
+			{
+				return this._Asignado_A;
+			}
+			set
+			{
+				if ((this._Asignado_A != value))
+				{
+					this._Asignado_A = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string Estado
+		{
+			get
+			{
+				return this._Estado;
+			}
+			set
+			{
+				if ((this._Estado != value))
+				{
+					this._Estado = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Fecha de Ingreso]", Storage="_Fecha_de_Ingreso", DbType="DateTime NOT NULL")]
+		public System.DateTime Fecha_de_Ingreso
+		{
+			get
+			{
+				return this._Fecha_de_Ingreso;
+			}
+			set
+			{
+				if ((this._Fecha_de_Ingreso != value))
+				{
+					this._Fecha_de_Ingreso = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[Fecha de último Estado]", Storage="_Fecha_de_último_Estado", DbType="DateTime NOT NULL")]
+		public System.DateTime Fecha_de_último_Estado
+		{
+			get
+			{
+				return this._Fecha_de_último_Estado;
+			}
+			set
+			{
+				if ((this._Fecha_de_último_Estado != value))
+				{
+					this._Fecha_de_último_Estado = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Duración", DbType="VarChar(36)")]
+		public string Duración
+		{
+			get
+			{
+				return this._Duración;
+			}
+			set
+			{
+				if ((this._Duración != value))
+				{
+					this._Duración = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CumplimientoPromedio", DbType="Float NOT NULL")]
+		public double CumplimientoPromedio
+		{
+			get
+			{
+				return this._CumplimientoPromedio;
+			}
+			set
+			{
+				if ((this._CumplimientoPromedio != value))
+				{
+					this._CumplimientoPromedio = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CumplimientoCalidad", DbType="VarChar(15) NOT NULL", CanBeNull=false)]
+		public string CumplimientoCalidad
+		{
+			get
+			{
+				return this._CumplimientoCalidad;
+			}
+			set
+			{
+				if ((this._CumplimientoCalidad != value))
+				{
+					this._CumplimientoCalidad = value;
 				}
 			}
 		}

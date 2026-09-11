@@ -340,9 +340,9 @@ namespace Tickets2
             message.Body = str;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
-            message.From = new MailAddress("sistemas@mrlucky.com.mx");
+            message.From = new MailAddress("sistemasgab@mrlucky.com.mx");
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "Sistem@s2026$");
+            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemasgab@mrlucky.com.mx", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -476,7 +476,6 @@ namespace Tickets2
             }
         }
 
-
         public void EnviarCorreoComentario(string incidencia, string atiende)
         {
             Servicio objServ = new Servicio();
@@ -548,9 +547,9 @@ namespace Tickets2
             message.Body = str;
             message.BodyEncoding = Encoding.UTF8;
             message.IsBodyHtml = true;
-            message.From = new MailAddress("sistemas@mrlucky.com.mx");
+            message.From = new MailAddress("sistemasgab@mrlucky.com.mx");
             SmtpClient smtpClient = new SmtpClient();
-            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemas", "Sistem@s2026$");
+            smtpClient.Credentials = (ICredentialsByHost)new NetworkCredential("sistemasgab@mrlucky.com.mx", "Sistem@s2026$");
             smtpClient.Port = 587;
             smtpClient.EnableSsl = true;
             smtpClient.Host = "mail1.mrlucky.com.mx";
@@ -563,10 +562,6 @@ namespace Tickets2
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-
-
 
         private void CargarGrids()
         {

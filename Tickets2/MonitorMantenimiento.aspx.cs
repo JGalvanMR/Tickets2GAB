@@ -22,13 +22,13 @@ namespace Tickets2
         }
         private void CargarGridManto()
         {
-            //var consulta1 = dcDatos.sp_Get_ServiciosSolicitados(0, 5);
-            var consulta1 = dcDatos.sp_Get_ServiciosSolicitadosM(0, 5);
+            //var consulta1 = dcDatos.sp_Get_ServicioSolicitados(0, 5);
+            var consulta1 = dcDatos.sp_Get_ServicioSolicitadosM(0, 5);
             dgSolicitadosMan.DataSource = consulta1;
             dgSolicitadosMan.DataBind();
 
-            //var consulta4 = dcDatos.sp_Get_ServiciosAsignados(0, 5);
-            var consulta4 = dcDatos.sp_Get_ServiciosAsignadosM(0, 5);
+            //var consulta4 = dcDatos.sp_Get_ServicioAsignados(0, 5);
+            var consulta4 = dcDatos.sp_Get_ServicioAsignadosM(0, 5);
             dgAbiertosMan.DataSource = consulta4;
             dgAbiertosMan.DataBind();
         }

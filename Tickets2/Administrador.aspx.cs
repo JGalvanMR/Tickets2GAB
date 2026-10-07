@@ -45,44 +45,44 @@ namespace Tickets2
         #region Carga de datos
         private void CargarCombos()
         {
-            // Cargar combo de departamentos
-            var consultaDeptoID = from d in dcDatos.Departamentos
+            // Cargar combo de Departamento
+            var consultaDeptoID = from d in dcDatos.Departamento
                                   select new
                                   {
-                                      Id = d.Dep_ID,
-                                      Departamentos = d.Dep_Departamento
+                                      Id = d.dep_ID,
+                                      Departamento = d.dep_Departamento
                                   };
             cmbDepto.DataSource = consultaDeptoID.ToList();
             cmbDepto.DataValueField = "Id";
-            cmbDepto.DataTextField = "Departamentos";
+            cmbDepto.DataTextField = "Departamento";
             cmbDepto.DataBind();
             cmbDepto.SelectedIndex = -1;
 
             // Cargar combo de responsables (departamento 1 = Sistemas)
-            var consultaAsignarRespon = from d in dcDatos.Personas
-                                        where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var consultaAsignarRespon = from d in dcDatos.Persona
+                                        where d.dep_ID == 1 && d.per_IsActivo == true
                                         select new
                                         {
-                                            Nombre = d.Per_Nombre + " " + d.Per_ApePat
+                                            Nombre = d.per_Nombre + " " + d.per_ApePat
                                         };
-            cmbResponsableServicioSis.DataSource = consultaAsignarRespon.ToList();
-            cmbResponsableServicioSis.DataValueField = "Nombre";
-            cmbResponsableServicioSis.DataTextField = "Nombre";
-            cmbResponsableServicioSis.DataBind();
-            cmbResponsableServicioSis.SelectedIndex = -1;
+            cmbResponsableServiciois.DataSource = consultaAsignarRespon.ToList();
+            cmbResponsableServiciois.DataValueField = "Nombre";
+            cmbResponsableServiciois.DataTextField = "Nombre";
+            cmbResponsableServiciois.DataBind();
+            cmbResponsableServiciois.SelectedIndex = -1;
         }
 
         private void CargarGridSistemas()
         {
-            var consulta1 = dcDatos.sp_Get_ServiciosSolicitados(0, 1).ToList();
+            var consulta1 = dcDatos.sp_Get_ServicioSolicitados(0, 1).ToList();
             dgSolicitados.DataSource = consulta1;
             dgSolicitados.DataBind();
 
-            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+            var consulta2 = dcDatos.sp_Get_ServicioAsignados(0, 1).ToList();
             dgAbiertosSis.DataSource = consulta2;
             dgAbiertosSis.DataBind();
 
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+            var consulta3 = dcDatos.sp_Get_ServicioFinalizados(0, 1).ToList();
             dgFinalizadosxis.DataSource = consulta3;
             dgFinalizadosxis.DataBind();
         }
@@ -92,7 +92,7 @@ namespace Tickets2
         protected void dgAbiertosSis_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             dgAbiertosSis.PageIndex = e.NewPageIndex;
-            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+            var consulta2 = dcDatos.sp_Get_ServicioAsignados(0, 1).ToList();
             dgAbiertosSis.DataSource = consulta2;
             dgAbiertosSis.DataBind();
             UpdatePanelAbiertos.Update();
@@ -125,53 +125,53 @@ namespace Tickets2
                 if (cmbDepto.SelectedIndex == -1) { MessageBox.Show("Seleccione un Departamento."); cmbDepto.Focus(); return; }
 
                 Persona objPer = new Persona();
-                var consultaNewPersona = from row in dcDatos.Personas
+                var consultaNewPersona = from row in dcDatos.Persona
                                          group row by true into s
-                                         select new { newID = s.Max(id => id.Per_ID) };
-                objPer.Per_ID = consultaNewPersona.First() != null ? consultaNewPersona.First().newID + 1 : 1;
-                objPer.Per_Nombre = txtNombre.Text;
-                objPer.Per_ApePat = txtApellidoP.Text;
-                objPer.Per_ApeMat = txtApellidoM.Text;
-                objPer.Per_Email = txtEmail.Text;
-                objPer.Per_ExtTelefono = txtTele.Text;
-                objPer.Per_IsActivo = true;
-                objPer.Dep_ID = int.Parse(cmbDepto.SelectedValue);
+                                         select new { newID = s.Max(id => id.per_ID) };
+                objPer.per_ID = consultaNewPersona.First() != null ? consultaNewPersona.First().newID + 1 : 1;
+                objPer.per_Nombre = txtNombre.Text;
+                objPer.per_ApePat = txtApellidoP.Text;
+                objPer.per_ApeMat = txtApellidoM.Text;
+                objPer.per_Email = txtEmail.Text;
+                objPer.per_ExtTelefono = txtTele.Text;
+                objPer.per_IsActivo = true;
+                objPer.dep_ID = int.Parse(cmbDepto.SelectedValue);
 
-                dcDatos.Personas.InsertOnSubmit(objPer);
+                dcDatos.Persona.InsertOnSubmit(objPer);
                 dcDatos.SubmitChanges();
 
                 Usuario objUsu = new Usuario();
-                var consultaNewUsuario = from row in dcDatos.Usuarios
+                var consultaNewUsuario = from row in dcDatos.Usuario
                                          group row by true into s
-                                         select new { newID = s.Max(id => id.Usu_ID) };
-                objUsu.Usu_ID = consultaNewUsuario.First() != null ? consultaNewUsuario.First().newID + 1 : 1;
-                objUsu.Usu_Usuario = txtNombreUsuario.Text;
-                objUsu.Usu_Password = txtPasswordUsuario.Text;
-                objUsu.Per_ID = objPer.Per_ID;
+                                         select new { newID = s.Max(id => id.usu_ID) };
+                objUsu.usu_ID = consultaNewUsuario.First() != null ? consultaNewUsuario.First().newID + 1 : 1;
+                objUsu.usu_Usuario = txtNombreUsuario.Text;
+                objUsu.usu_Password = txtPasswordUsuario.Text;
+                objUsu.per_ID = objPer.per_ID;
 
-                dcDatos.Usuarios.InsertOnSubmit(objUsu);
+                dcDatos.Usuario.InsertOnSubmit(objUsu);
                 dcDatos.SubmitChanges();
 
                 if (cmbRol.SelectedValue == "cmbUsuario")
                 {
                     Trabajador objTrab = new Trabajador();
-                    var consultaNewTrabajador = from row in dcDatos.Trabajadors
+                    var consultaNewTrabajador = from row in dcDatos.Trabajador
                                                 group row by true into s
-                                                select new { newID = s.Max(id => id.Tra_ID) };
-                    objTrab.Tra_ID = consultaNewTrabajador.First() != null ? consultaNewTrabajador.First().newID + 1 : 1;
-                    objTrab.Per_ID = objPer.Per_ID;
-                    dcDatos.Trabajadors.InsertOnSubmit(objTrab);
+                                                select new { newID = s.Max(id => id.tra_ID) };
+                    objTrab.tra_ID = consultaNewTrabajador.First() != null ? consultaNewTrabajador.First().newID + 1 : 1;
+                    objTrab.per_ID = objPer.per_ID;
+                    dcDatos.Trabajador.InsertOnSubmit(objTrab);
                     dcDatos.SubmitChanges();
                 }
                 else
                 {
                     Administrador objAdministrador = new Administrador();
-                    var consultaNewAdministrador = from row in dcDatos.Administradors
+                    var consultaNewAdministrador = from row in dcDatos.Administrador
                                                    group row by true into s
-                                                   select new { newID = s.Max(id => id.Adm_ID) };
-                    objAdministrador.Adm_ID = consultaNewAdministrador.First() != null ? consultaNewAdministrador.First().newID + 1 : 1;
-                    objAdministrador.Per_ID = objPer.Per_ID;
-                    dcDatos.Administradors.InsertOnSubmit(objAdministrador);
+                                                   select new { newID = s.Max(id => id.adm_ID) };
+                    objAdministrador.adm_ID = consultaNewAdministrador.First() != null ? consultaNewAdministrador.First().newID + 1 : 1;
+                    objAdministrador.per_ID = objPer.per_ID;
+                    dcDatos.Administrador.InsertOnSubmit(objAdministrador);
                     dcDatos.SubmitChanges();
                 }
 
@@ -203,19 +203,19 @@ namespace Tickets2
             int ID_Servicio_Fin;
             if (!int.TryParse(txtIdServicioFinSis.Text, out ID_Servicio_Fin)) { MessageBox.Show("Ingrese un numero entero en el Id del servicio a finalizar"); txtIdServicioFinSis.Text = ""; txtIdServicioFinSis.Focus(); return; }
 
-            Servicio objSerValida = (from s in dcDatos.Servicios where s.Ser_ID == ID_Servicio_Fin select s).SingleOrDefault();
+            Servicio objSerValida = (from s in dcDatos.Servicio where s.ser_ID == ID_Servicio_Fin select s).SingleOrDefault();
             if (objSerValida != null)
             {
-                if (objSerValida.Sere_ID != (int)enumServicioEstado.Abierto) { MessageBox.Show("El servicio " + ID_Servicio_Fin + " no tiene el estatus: Asignado."); txtIdServicioFinSis.Text = ""; txtIdServicioFinSis.Focus(); return; }
+                if (objSerValida.sere_ID != (int)enumServicioEstado.Abierto) { MessageBox.Show("El servicio " + ID_Servicio_Fin + " no tiene el estatus: Asignado."); txtIdServicioFinSis.Text = ""; txtIdServicioFinSis.Focus(); return; }
             }
             else { MessageBox.Show("No existe el servicio."); return; }
-            if (objSerValida.Ser_DeptoQueAtiende != objAdmin.Persona.Dep_ID) { MessageBox.Show("El servicio " + ID_Servicio_Fin + " no es uno de tus servicios solicitados."); txtIdServicioFinSis.Text = ""; return; }
+            if (objSerValida.ser_DeptoQueAtiende != objAdmin.Persona.dep_ID) { MessageBox.Show("El servicio " + ID_Servicio_Fin + " no es uno de tus Servicio solicitados."); txtIdServicioFinSis.Text = ""; return; }
 
-            var queryFinalizarSerSis = from ord in dcDatos.Servicios where ord.Ser_ID == Convert.ToInt32(txtIdServicioFinSis.Text) select ord;
+            var queryFinalizarSerSis = from ord in dcDatos.Servicio where ord.ser_ID == Convert.ToInt32(txtIdServicioFinSis.Text) select ord;
             foreach (Servicio ord in queryFinalizarSerSis)
             {
-                ord.Sere_ID = 3;
-                ord.Ser_FechaUltimoE = DateTime.Now;
+                ord.sere_ID = 3;
+                ord.ser_FechaUltimoE = DateTime.Now;
             }
 
             try
@@ -232,22 +232,22 @@ namespace Tickets2
             txtIdServicioFinSis.Text = "";
         }
 
-        protected void btnAsignarServicioSis_Click(object sender, EventArgs e)
+        protected void btnAsignarServiciois_Click(object sender, EventArgs e)
         {
             // Validaciones (se mantienen)
             if (string.IsNullOrEmpty(txtIdServicioResponsableSis.Text)) { MessageBox.Show("Ingrese el Id del servicio a por asignar."); txtIdServicioResponsableSis.Text = ""; txtIdServicioResponsableSis.Focus(); return; }
             if (string.IsNullOrEmpty(datetimepicker4.Text)) { MessageBox.Show("Ingrese fecha estimada de fin de servicio"); datetimepicker4.Text = ""; datetimepicker4.Focus(); return; }
             int ID_Servicio_Responsable;
             if (!int.TryParse(txtIdServicioResponsableSis.Text, out ID_Servicio_Responsable)) { MessageBox.Show("Ingrese un numero entero en el Id del servicio por asignar"); txtIdServicioResponsableSis.Text = ""; txtIdServicioResponsableSis.Focus(); return; }
-            if (cmbResponsableServicioSis.SelectedIndex == -1) { MessageBox.Show("Seleccione un responsable del servicio."); cmbResponsableServicioSis.Focus(); return; }
+            if (cmbResponsableServiciois.SelectedIndex == -1) { MessageBox.Show("Seleccione un responsable del servicio."); cmbResponsableServiciois.Focus(); return; }
 
-            Servicio objSerValida = (from s in dcDatos.Servicios where s.Ser_ID == ID_Servicio_Responsable select s).SingleOrDefault();
+            Servicio objSerValida = (from s in dcDatos.Servicio where s.ser_ID == ID_Servicio_Responsable select s).SingleOrDefault();
             if (objSerValida != null)
             {
-                if (objSerValida.Sere_ID != (int)enumServicioEstado.Solicitado) { MessageBox.Show("El servicio " + ID_Servicio_Responsable + " no tiene el estatus: Solicitado."); txtIdServicioResponsableSis.Text = ""; txtIdServicioResponsableSis.Focus(); return; }
+                if (objSerValida.sere_ID != (int)enumServicioEstado.Solicitado) { MessageBox.Show("El servicio " + ID_Servicio_Responsable + " no tiene el estatus: Solicitado."); txtIdServicioResponsableSis.Text = ""; txtIdServicioResponsableSis.Focus(); return; }
             }
             else { MessageBox.Show("No existe el servicio."); return; }
-            if (objSerValida.Ser_DeptoQueAtiende != objAdmin.Persona.Dep_ID) { MessageBox.Show("El servicio " + ID_Servicio_Responsable + " no es uno de tus servicios solicitados."); txtIdServicioResponsableSis.Text = ""; return; }
+            if (objSerValida.ser_DeptoQueAtiende != objAdmin.Persona.dep_ID) { MessageBox.Show("El servicio " + ID_Servicio_Responsable + " no es uno de tus Servicio solicitados."); txtIdServicioResponsableSis.Text = ""; return; }
 
             try
             {
@@ -266,10 +266,10 @@ namespace Tickets2
                     return;
                 }
 
-                objSer.Ser_Nombre_Atiende = cmbResponsableServicioSis.SelectedValue;
-                objSer.Ser_FechaUltimoE = DateTime.Now;
-                objSer.Sere_ID = (int)enumServicioEstado.Abierto;
-                objSer.Ser_FechaEstimadaFin = fechaEstimada;
+                objSer.ser_Nombre_Atiende = cmbResponsableServiciois.SelectedValue;
+                objSer.ser_FechaUltimoE = DateTime.Now;
+                objSer.sere_ID = (int)enumServicioEstado.Abierto;
+                objSer.ser_FechaEstimadaFin = fechaEstimada;
 
                 dcDatos.SubmitChanges();
                 CargarGridSistemas();
@@ -281,43 +281,43 @@ namespace Tickets2
                 MessageBox.Show("Error: " + ex.Message);
             }
             txtIdServicioResponsableSis.Text = "";
-            cmbResponsableServicioSis.SelectedIndex = -1;
+            cmbResponsableServiciois.SelectedIndex = -1;
         }
 
         protected void btnComentarioSis_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtIdServicioSis.Text)) { MessageBox.Show("Ingrese id del servicio a comentar."); txtIdServicioSis.Text = ""; txtIdServicioSis.Focus(); return; }
+            if (string.IsNullOrEmpty(txtIdServiciois.Text)) { MessageBox.Show("Ingrese id del servicio a comentar."); txtIdServiciois.Text = ""; txtIdServiciois.Focus(); return; }
             int ID_Servicio_Comentario;
-            if (!int.TryParse(txtIdServicioSis.Text, out ID_Servicio_Comentario)) { MessageBox.Show("Ingrese un numero entero en el Id del servicio por comentar"); txtIdServicioSis.Text = ""; txtIdServicioSis.Focus(); return; }
+            if (!int.TryParse(txtIdServiciois.Text, out ID_Servicio_Comentario)) { MessageBox.Show("Ingrese un numero entero en el Id del servicio por comentar"); txtIdServiciois.Text = ""; txtIdServiciois.Focus(); return; }
             if (string.IsNullOrEmpty(txtComentarioSis.Text)) { MessageBox.Show("Ingrese el comentario."); txtComentarioSis.Text = ""; txtComentarioSis.Focus(); return; }
 
-            Servicio objSerValida = (from s in dcDatos.Servicios where s.Ser_ID == ID_Servicio_Comentario select s).SingleOrDefault();
+            Servicio objSerValida = (from s in dcDatos.Servicio where s.ser_ID == ID_Servicio_Comentario select s).SingleOrDefault();
             if (objSerValida != null)
             {
-                if (objSerValida.Sere_ID == (int)enumServicioEstado.Solicitado) { MessageBox.Show("El servicio " + ID_Servicio_Comentario + " tiene el estatus: Solicitado. No se puede comentar."); txtComentarioSis.Text = ""; return; }
+                if (objSerValida.sere_ID == (int)enumServicioEstado.Solicitado) { MessageBox.Show("El servicio " + ID_Servicio_Comentario + " tiene el estatus: Solicitado. No se puede comentar."); txtComentarioSis.Text = ""; return; }
             }
             else { MessageBox.Show("No existe el servicio."); return; }
-            if (objSerValida.Ser_DeptoQueAtiende != objAdmin.Persona.Dep_ID) { MessageBox.Show("El servicio " + ID_Servicio_Comentario + " no es uno de tus servicios."); txtComentarioSis.Text = ""; return; }
+            if (objSerValida.ser_DeptoQueAtiende != objAdmin.Persona.dep_ID) { MessageBox.Show("El servicio " + ID_Servicio_Comentario + " no es uno de tus Servicio."); txtComentarioSis.Text = ""; return; }
 
             Comentario objComen = new Comentario();
-            var queryComentarSis = from row in dcDatos.Comentarios group row by true into s select new { newID = s.Max(id => id.Com_ID) };
+            var queryComentarSis = from row in dcDatos.Comentario group row by true into s select new { newID = s.Max(id => id.com_ID) };
             try
             {
-                objComen.Com_ID = queryComentarSis.First() != null ? queryComentarSis.First().newID + 1 : 1;
+                objComen.com_ID = queryComentarSis.First() != null ? queryComentarSis.First().newID + 1 : 1;
             }
             catch
             {
-                objComen.Com_ID = 1;
+                objComen.com_ID = 1;
             }
 
-            objComen.Ser_ID = ID_Servicio_Comentario;
-            objComen.Com_Comentario = txtComentarioSis.Text;
-            objComen.Com_FechaCom = DateTime.Now;
-            objComen.Per_ID = objAdmin.Per_ID;
+            objComen.ser_ID = ID_Servicio_Comentario;
+            objComen.com_Comentario = txtComentarioSis.Text;
+            objComen.com_FechaCom = DateTime.Now;
+            objComen.per_ID = objAdmin.per_ID;
 
             try
             {
-                dcDatos.Comentarios.InsertOnSubmit(objComen);
+                dcDatos.Comentario.InsertOnSubmit(objComen);
                 dcDatos.SubmitChanges();
                 CargarGridSistemas();
                 EnviarCorreoComentario();
@@ -327,23 +327,23 @@ namespace Tickets2
             {
                 MessageBox.Show("Error: " + ex.Message);
             }
-            txtIdServicioSis.Text = "";
+            txtIdServiciois.Text = "";
             txtComentarioSis.Text = "";
         }
-        private void CargarServiciosFinalizados()
+        private void CargarServicioFinalizados()
         {
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+            var consulta3 = dcDatos.sp_Get_ServicioFinalizados(0, 1).ToList();
             dgFinalizadosxis.DataSource = consulta3;
             dgFinalizadosxis.DataBind();
         }
-        private void CargarServiciosAsignados()
+        private void CargarServicioAsignados()
         {
-            var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+            var consulta2 = dcDatos.sp_Get_ServicioAsignados(0, 1).ToList();
             dgAbiertosSis.DataSource = consulta2;
             dgAbiertosSis.DataBind();
         }
 
-        protected void btnAsignarServicioSis_ClickOG(object sender, EventArgs e)
+        protected void btnAsignarServiciois_ClickOG(object sender, EventArgs e)
         {
             #region Validar cajas
             if (string.IsNullOrEmpty(txtIdServicioResponsableSis.Text))
@@ -373,20 +373,20 @@ namespace Tickets2
                 txtIdServicioResponsableSis.Focus();
                 return;
             }
-            if (cmbResponsableServicioSis.SelectedIndex == -1)
+            if (cmbResponsableServiciois.SelectedIndex == -1)
             {
                 MessageBox.Show("Seleccione un responsable del servicio.");
-                cmbResponsableServicioSis.Focus();
+                cmbResponsableServiciois.Focus();
                 return;
             }
             //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
             //TENGA ESTATUS 2 (ASIGNADO)
-            Servicio objSerValida = (from s in dcDatos.Servicios
-                                     where s.Ser_ID == ID_Servicio_Responsable
+            Servicio objSerValida = (from s in dcDatos.Servicio
+                                     where s.ser_ID == ID_Servicio_Responsable
                                      select s).SingleOrDefault();
             if (objSerValida != null)
             {
-                if (objSerValida.Sere_ID != (int)enumServicioEstado.Solicitado)
+                if (objSerValida.sere_ID != (int)enumServicioEstado.Solicitado)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_Responsable.ToString()
                         + " no tiene el estatus: Solicitado. Por lo que no se puede asignar un responsable al servicio.");
@@ -401,10 +401,10 @@ namespace Tickets2
                 MessageBox.Show("No existe el servicio.");
                 return;
             }
-            if (objSerValida.Ser_DeptoQueAtiende != objAdmin.Persona.Dep_ID)
+            if (objSerValida.ser_DeptoQueAtiende != objAdmin.Persona.dep_ID)
             {
                 MessageBox.Show("El servicio " + ID_Servicio_Responsable.ToString()
-                    + " no es uno de tus servicios solicitados.");
+                    + " no es uno de tus Servicio solicitados.");
                 txtIdServicioResponsableSis.Text = "";
                 return;
             }
@@ -465,10 +465,10 @@ namespace Tickets2
                         }
                     }
 
-                    objSer.Ser_Nombre_Atiende = cmbResponsableServicioSis.SelectedValue;
-                    objSer.Ser_FechaUltimoE = DateTime.Now;
-                    objSer.Sere_ID = (int)enumServicioEstado.Abierto;
-                    objSer.Ser_FechaEstimadaFin = fechaEstimadaFin;
+                    objSer.ser_Nombre_Atiende = cmbResponsableServiciois.SelectedValue;
+                    objSer.ser_FechaUltimoE = DateTime.Now;
+                    objSer.sere_ID = (int)enumServicioEstado.Abierto;
+                    objSer.ser_FechaEstimadaFin = fechaEstimadaFin;
 
                     dcDatos.SubmitChanges();
 
@@ -502,7 +502,7 @@ namespace Tickets2
 
             //limpiar caja
             txtIdServicioResponsableSis.Text = "";
-            cmbResponsableServicioSis.SelectedIndex = -1;
+            cmbResponsableServiciois.SelectedIndex = -1;
         }
 
         protected void dgFinalizadosSis_PageIndexChangingLEGACY(object sender, GridViewPageEventArgs e)
@@ -510,7 +510,7 @@ namespace Tickets2
             try
             {
                 dgFinalizadosxis.PageIndex = e.NewPageIndex;
-                var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+                var consulta3 = dcDatos.sp_Get_ServicioFinalizados(0, 1).ToList();
                 dgFinalizadosxis.DataSource = consulta3;
                 dgFinalizadosxis.DataBind();
             }
@@ -527,7 +527,7 @@ namespace Tickets2
             try
             {
                 dgAbiertosSis.PageIndex = e.NewPageIndex;
-                var consulta2 = dcDatos.sp_Get_ServiciosAsignados(0, 1).ToList();
+                var consulta2 = dcDatos.sp_Get_ServicioAsignados(0, 1).ToList();
                 dgAbiertosSis.DataSource = consulta2;
                 dgAbiertosSis.DataBind();
             }
@@ -542,7 +542,7 @@ namespace Tickets2
         {
             dgFinalizadosxis.PageIndex = e.NewPageIndex;
 
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(0, 1).ToList();
+            var consulta3 = dcDatos.sp_Get_ServicioFinalizados(0, 1).ToList();
 
             dgFinalizadosxis.DataSource = consulta3;
             dgFinalizadosxis.DataBind();
@@ -582,12 +582,12 @@ namespace Tickets2
 
                 //VALIDAR QUE EL EL SERVICIO PROPORCIONADO
                 //ESTE CON ESTATUS 2 (ASIGNADO) y 3(FINALIZADO)
-                Servicio objSerValida = (from s in dcDatos.Servicios
-                                         where s.Ser_ID == ID_Servicio_foto
+                Servicio objSerValida = (from s in dcDatos.Servicio
+                                         where s.ser_ID == ID_Servicio_foto
                                          select s).SingleOrDefault();
                 if (objSerValida != null)
                 {
-                    if (objSerValida.Sere_ID == (int)enumServicioEstado.Solicitado)
+                    if (objSerValida.sere_ID == (int)enumServicioEstado.Solicitado)
                     {
                         MessageBox.Show("El servicio " + ID_Servicio_foto.ToString()
                             + " tiene el estatus: Solicitado. Por lo que no se puede agregar fotos.");
@@ -600,10 +600,10 @@ namespace Tickets2
                     MessageBox.Show("No existe el servicio.");
                     return;
                 }
-                if (objSerValida.Ser_DeptoQueAtiende != objAdmin.Persona.Dep_ID)
+                if (objSerValida.ser_DeptoQueAtiende != objAdmin.Persona.dep_ID)
                 {
                     MessageBox.Show("El servicio " + ID_Servicio_foto.ToString()
-                        + " no es uno de tus servicios solicitados.");
+                        + " no es uno de tus Servicio solicitados.");
                     idserviciofotos.Text = "";
                     return;
                 }
@@ -629,11 +629,11 @@ namespace Tickets2
                 string fileName = ID_Servicio_foto.ToString();
                 int numfotos = 0;
 
-                var consultaNewID = from row in dcDatos.Servicios
-                                    where row.Ser_ID == ID_Servicio_foto
+                var consultaNewID = from row in dcDatos.Servicio
+                                    where row.ser_ID == ID_Servicio_foto
                                     select new
                                     {
-                                        Nofotos = row.Ser_Num_Fotos
+                                        Nofotos = row.ser_Num_Fotos
                                     };
 
                 if (consultaNewID.First() != null)
@@ -641,12 +641,12 @@ namespace Tickets2
                 else
                     numfotos = Convert.ToInt32(0);
 
-                Servicio objSer = (from s in dcDatos.Servicios
-                                   where s.Ser_ID == ID_Servicio_foto
+                Servicio objSer = (from s in dcDatos.Servicio
+                                   where s.ser_ID == ID_Servicio_foto
                                    select s).SingleOrDefault();
                 if (objSer != null)
                 {
-                    objSer.Ser_Num_Fotos = numfotos + uploadedFiles.Count;
+                    objSer.ser_Num_Fotos = numfotos + uploadedFiles.Count;
 
                     //dcDatos.Servicio.InsertOnSubmit(objServ);
                     dcDatos.SubmitChanges();
@@ -718,19 +718,19 @@ namespace Tickets2
         {
             string mensaje = "";
             string correodestino = "";
-            var consulta = from u in dcDatos.Servicios
-                           join p in dcDatos.Personas
-                           on new { u.Per_ID_Levanto } equals
-                           new { Per_ID_Levanto = p.Per_ID } into sr
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on new { u.per_ID_Levanto } equals
+                           new { per_ID_Levanto = p.per_ID } into sr
                            from x in sr.DefaultIfEmpty()
-                           where u.Ser_ID == Convert.ToInt32(txtIdServicioResponsableSis.Text)
+                           where u.ser_ID == Convert.ToInt32(txtIdServicioResponsableSis.Text)
                            select new
                            {
-                               descripcion = u.Ser_Incidente,
-                               horaingreso = u.Ser_FechaIngreso,
-                               levanto = x.Per_Nombre + " " + x.Per_ApePat + " " + x.Per_ApeMat,
-                               correo = x.Per_Email,
-                               copiacorreo = x.Per_copia
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = x.per_Nombre + " " + x.per_ApePat + " " + x.per_ApeMat,
+                               correo = x.per_Email,
+                               copiacorreo = x.per_copia
                            };
             string html = "";
             string html2 = "";
@@ -741,7 +741,7 @@ namespace Tickets2
             {
                 foreach (var i in consulta)
                 {
-                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServiciois.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
                     correodestino = i.correo;
                     if (i.copiacorreo != "" && i.copiacorreo != null)
                     {
@@ -790,11 +790,11 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets - Asignacion";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
-            var correodes = from d in dcDatos.Personas
-                            where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
                             select new
                             {
-                                correo = d.Per_Email
+                                correo = d.per_Email
                             };
             if (correodes.Count() > 0)
                 foreach (var i in correodes)
@@ -830,17 +830,17 @@ namespace Tickets2
                 throw new Exception("ID de servicio no válido");
             }
 
-            var consulta = from u in dcDatos.Servicios
-                           join p in dcDatos.Personas
-                           on u.Per_ID_Levanto equals p.Per_ID
-                           where u.Ser_ID == idServicio
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on u.per_ID_Levanto equals p.per_ID
+                           where u.ser_ID == idServicio
                            select new
                            {
-                               descripcion = u.Ser_Incidente,
-                               horaingreso = u.Ser_FechaIngreso,
-                               levanto = p.Per_Nombre + " " + p.Per_ApePat + " " + p.Per_ApeMat,
-                               correo = p.Per_Email,
-                               copiacorreo = p.Per_copia
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = p.per_Nombre + " " + p.per_ApePat + " " + p.per_ApeMat,
+                               correo = p.per_Email,
+                               copiacorreo = p.per_copia
                            };
 
             MailMessage message = new MailMessage();
@@ -849,7 +849,7 @@ namespace Tickets2
             {
                 foreach (var i in consulta)
                 {
-                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServiciois.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
                     correodestino = i.correo;
 
                     if (!string.IsNullOrEmpty(i.copiacorreo))
@@ -872,11 +872,11 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets - Asignacion";
             message.SubjectEncoding = Encoding.UTF8;
 
-            var correodes = from d in dcDatos.Personas
-                            where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
                             select new
                             {
-                                correo = d.Per_Email
+                                correo = d.per_Email
                             };
 
             if (correodes.Count() > 0)
@@ -965,17 +965,17 @@ namespace Tickets2
                 throw new Exception("ID de servicio no válido para enviar correo");
             }
 
-            var consulta = from u in dcDatos.Servicios
-                           join p in dcDatos.Personas
-                           on u.Per_ID_Levanto equals p.Per_ID
-                           where u.Ser_ID == idServicio
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on u.per_ID_Levanto equals p.per_ID
+                           where u.ser_ID == idServicio
                            select new
                            {
-                               descripcion = u.Ser_Incidente,
-                               horaingreso = u.Ser_FechaIngreso,
-                               levanto = p.Per_Nombre + " " + p.Per_ApePat + " " + p.Per_ApeMat,
-                               correo = p.Per_Email,
-                               copiacorreo = p.Per_copia
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = p.per_Nombre + " " + p.per_ApePat + " " + p.per_ApeMat,
+                               correo = p.per_Email,
+                               copiacorreo = p.per_copia
                            };
 
             MailMessage message = new MailMessage();
@@ -984,7 +984,7 @@ namespace Tickets2
             {
                 foreach (var i in consulta)
                 {
-                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServiciois.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
                     correodestino = i.correo;
 
                     if (!string.IsNullOrEmpty(i.copiacorreo))
@@ -1007,11 +1007,11 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets - Asignacion";
             message.SubjectEncoding = Encoding.UTF8;
 
-            var correodes = from d in dcDatos.Personas
-                            where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
                             select new
                             {
-                                correo = d.Per_Email
+                                correo = d.per_Email
                             };
 
             if (correodes.Count() > 0)
@@ -1101,17 +1101,17 @@ namespace Tickets2
                 throw new Exception("ID de servicio no válido para enviar correo");
             }
 
-            var consulta = from u in dcDatos.Servicios
-                           join p in dcDatos.Personas
-                           on u.Per_ID_Levanto equals p.Per_ID
-                           where u.Ser_ID == idServicio
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on u.per_ID_Levanto equals p.per_ID
+                           where u.ser_ID == idServicio
                            select new
                            {
-                               descripcion = u.Ser_Incidente,
-                               horaingreso = u.Ser_FechaIngreso,
-                               levanto = p.Per_Nombre + " " + p.Per_ApePat + " " + p.Per_ApeMat,
-                               correo = p.Per_Email,
-                               copiacorreo = p.Per_copia
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = p.per_Nombre + " " + p.per_ApePat + " " + p.per_ApeMat,
+                               correo = p.per_Email,
+                               copiacorreo = p.per_copia
                            };
 
             MailMessage message = new MailMessage();
@@ -1120,7 +1120,7 @@ namespace Tickets2
             {
                 foreach (var i in consulta)
                 {
-                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServicioSis.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioResponsableSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Fecha Estimada de finalizacion: </td><td>" + datetimepicker4.Text + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + cmbResponsableServiciois.Text + "</td></tr><tr><td>Liga local: </td><td>http://192.168.123.4:81/Tickets2/Administrador.aspx</td></tr><tr><td>Liga Internet: </td><td>http://189.206.160.206:81/Tickets2/Administrador.aspx</td></tr></table>";
                     correodestino = i.correo;
 
                     if (!string.IsNullOrEmpty(i.copiacorreo))
@@ -1143,11 +1143,11 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets - Asignacion";
             message.SubjectEncoding = Encoding.UTF8;
 
-            var correodes = from d in dcDatos.Personas
-                            where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
                             select new
                             {
-                                correo = d.Per_Email
+                                correo = d.per_Email
                             };
 
             if (correodes.Count() > 0)
@@ -1239,20 +1239,20 @@ namespace Tickets2
         {
             string mensaje = "";
             string correodestino = "";
-            var consulta = from u in dcDatos.Servicios
-                           join p in dcDatos.Personas
-                           on new { u.Per_ID_Levanto } equals
-                           new { Per_ID_Levanto = p.Per_ID } into sr
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on new { u.per_ID_Levanto } equals
+                           new { per_ID_Levanto = p.per_ID } into sr
                            from x in sr.DefaultIfEmpty()
-                           where u.Ser_ID == Convert.ToInt32(txtIdServicioSis.Text)
+                           where u.ser_ID == Convert.ToInt32(txtIdServiciois.Text)
                            select new
                            {
-                               atiende = u.Ser_Nombre_Atiende,
-                               descripcion = u.Ser_Incidente,
-                               horaingreso = u.Ser_FechaIngreso,
-                               levanto = x.Per_Nombre + " " + x.Per_ApePat + " " + x.Per_ApeMat,
-                               correo = x.Per_Email,
-                               copiacorreo = x.Per_copia
+                               atiende = u.ser_Nombre_Atiende,
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = x.per_Nombre + " " + x.per_ApePat + " " + x.per_ApeMat,
+                               correo = x.per_Email,
+                               copiacorreo = x.per_copia
                            };
             string html = "";
             string html2 = "";
@@ -1261,7 +1261,7 @@ namespace Tickets2
             {
                 foreach (var i in consulta)
                 {
-                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServicioSis.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + i.atiende + "</td></tr><tr><td>Comentario: </td><td>" + txtComentarioSis.Text + "</td></tr></table>";
+                    mensaje = "<table border='1' width='400px'><tr><td colspan='2'><h3>Sistema de Tickets</h3></td></tr><tr><td>No. de ticket: </td><td>" + txtIdServiciois.Text.Trim() + "</td></tr><tr><td>Reporto: </td><td>" + i.levanto + "</td></tr><tr><td>Descripcion: </td><td>" + i.descripcion + "</td></tr><tr><td>Servicio Atendido Por: </td><td>" + i.atiende + "</td></tr><tr><td>Comentario: </td><td>" + txtComentarioSis.Text + "</td></tr></table>";
                     correodestino = i.correo;
                     if (i.copiacorreo != "" && i.copiacorreo != null)
                     {
@@ -1305,11 +1305,11 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets - Comentario";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
-            var correodes = from d in dcDatos.Personas
-                            where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
                             select new
                             {
-                                correo = d.Per_Email
+                                correo = d.per_Email
                             };
             if (correodes.Count() > 0)
                 foreach (var i in correodes)
@@ -1339,20 +1339,20 @@ namespace Tickets2
         {
             string mensaje = "";
             string correodestino = "";
-            var consulta = from u in dcDatos.Servicios
-                           join p in dcDatos.Personas
-                           on new { u.Per_ID_Levanto } equals
-                           new { Per_ID_Levanto = p.Per_ID } into sr
+            var consulta = from u in dcDatos.Servicio
+                           join p in dcDatos.Persona
+                           on new { u.per_ID_Levanto } equals
+                           new { per_ID_Levanto = p.per_ID } into sr
                            from x in sr.DefaultIfEmpty()
-                           where u.Ser_ID == Convert.ToInt32(txtIdServicioFinSis.Text)
+                           where u.ser_ID == Convert.ToInt32(txtIdServicioFinSis.Text)
                            select new
                            {
-                               atiende = u.Ser_Nombre_Atiende,
-                               descripcion = u.Ser_Incidente,
-                               horaingreso = u.Ser_FechaIngreso,
-                               levanto = x.Per_Nombre + " " + x.Per_ApePat + " " + x.Per_ApeMat,
-                               correo = x.Per_Email,
-                               copiacorreo = x.Per_copia
+                               atiende = u.ser_Nombre_Atiende,
+                               descripcion = u.ser_Incidente,
+                               horaingreso = u.ser_FechaIngreso,
+                               levanto = x.per_Nombre + " " + x.per_ApePat + " " + x.per_ApeMat,
+                               correo = x.per_Email,
+                               copiacorreo = x.per_copia
                            };
             string html = "";
             string html2 = "";
@@ -1405,11 +1405,11 @@ namespace Tickets2
             message.Subject = "Sistema de Tickets - Servicio Finalizado";
             message.SubjectEncoding = Encoding.UTF8;
             //message.Bcc.Add("ahernandez@mrlucky.com.mx");
-            var correodes = from d in dcDatos.Personas
-                            where d.Dep_ID == 1 && d.Per_IsActivo == true
+            var correodes = from d in dcDatos.Persona
+                            where d.dep_ID == 1 && d.per_IsActivo == true
                             select new
                             {
-                                correo = d.Per_Email
+                                correo = d.per_Email
                             };
             if (correodes.Count() > 0)
                 foreach (var i in correodes)

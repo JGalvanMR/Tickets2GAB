@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Usuarios de Tickets</title>
+    <title>Usuario de Tickets</title>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -92,7 +92,7 @@
             <br />
             <ul class="nav nav-tabs" id="tablas">
                 <li class="active"><a href="#nueva" data-toggle="tab">Nueva Solicitud <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></li>
-                <li><a href="#ver" data-toggle="tab">Ver Mis Servicios <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
+                <li><a href="#ver" data-toggle="tab">Ver Mis Servicio <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
                 <li><a href="#contra" data-toggle="tab">Cambiar Contraseña <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                 <li><a href="Usuario.aspx" class="btn btn-success">Refrescar <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a></li>
                 <li>
@@ -168,9 +168,9 @@
                     <br />
                 </div>
                 <div class="tab-pane fade" id="ver">
-                    <h3>Servicios Solicitados</h3>
+                    <h3>Servicio Solicitados</h3>
                     <asp:GridView runat="server" ID="dgSolicitados" CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>
@@ -327,7 +327,7 @@
                         </div>
                     </div>
                     <hr />
-                    <h3>Servicios Asignados</h3>
+                    <h3>Servicio Asignados</h3>
                     <div class="row">
                         <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
                             <label>Id del Servicio: </label>
@@ -346,7 +346,7 @@
                         </div>
                     </div>
                     <asp:GridView runat="server" ID="dgAbiertos" CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>
@@ -376,9 +376,9 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
-                    <h3>Servicios Finalizados</h3>
+                    <h3>Servicio Finalizados</h3>
                     <asp:GridView runat="server" ID="dgFinalizados" CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true"
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true"
                         OnPageIndexChanging="dgFinalizados_PageIndexChanging">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>

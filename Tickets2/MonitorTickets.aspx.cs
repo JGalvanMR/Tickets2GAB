@@ -22,20 +22,20 @@ namespace Tickets2
                 //----------------------------------------------------------------------------------
                 //                  SOLICITADOS
                 //---------------------------------------------------------------------------------
-                var consulta1 = from s in dcDatos.Servicios
-                                join pl in dcDatos.Personas on s.Per_ID_Levanto equals pl.Per_ID
-                                join dep in dcDatos.Departamentos on s.Ser_DeptoQueAtiende equals dep.Dep_ID
-                                where s.Sere_ID == (int)enumServicioEstado.Solicitado
-                                orderby s.Ser_ID descending
+                var consulta1 = from s in dcDatos.Servicio
+                                join pl in dcDatos.Persona on s.per_ID_Levanto equals pl.per_ID
+                                join dep in dcDatos.Departamento on s.ser_DeptoQueAtiende equals dep.dep_ID
+                                where s.sere_ID == (int)enumServicioEstado.Solicitado
+                                orderby s.ser_ID descending
                                 select new
                                 {
-                                    ID = s.Ser_ID,
-                                    Fecha = s.Ser_FechaIngreso,
-                                    Nombre = pl.Per_ApePat + " " + pl.Per_Nombre,
-                                    Solicitado_A = dep.Dep_Departamento,
-                                    Area = s.Ser_Area,
-                                    Equipo = s.Ser_Equipo,
-                                    Incidente = s.Ser_Incidente,
+                                    ID = s.ser_ID,
+                                    Fecha = s.ser_FechaIngreso,
+                                    Nombre = pl.per_ApePat + " " + pl.per_Nombre,
+                                    Solicitado_A = dep.dep_Departamento,
+                                    Area = s.ser_Area,
+                                    Equipo = s.ser_Equipo,
+                                    Incidente = s.ser_Incidente,
                                     Estado = "Solicitado"
                                 };
                 dgSolicitados.DataSource = consulta1;
@@ -46,7 +46,7 @@ namespace Tickets2
                 //----------------------------------------------------------------------------------
                 int ID_Search_Asignados = 0;
                 int.TryParse("0", out ID_Search_Asignados);
-                var consulta2 = dcDatos.sp_Get_ServiciosAsignados(ID_Search_Asignados, 0);
+                var consulta2 = dcDatos.sp_Get_ServicioAsignados(ID_Search_Asignados, 0);
 
                 dgAbiertos.DataSource = consulta2;
                 dgAbiertos.DataBind();
@@ -56,7 +56,7 @@ namespace Tickets2
                 //----------------------------------------------------------------------------------
                 int ID_Search_Finalizados = 0;
                 int.TryParse(txtID_Search_Finalizados.Text, out ID_Search_Finalizados);
-                var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(ID_Search_Finalizados, 0);
+                var consulta3 = dcDatos.sp_Get_ServicioFinalizados(ID_Search_Finalizados, 0);
 
                 dgFinalizados.DataSource = consulta3;
                 dgFinalizados.DataBind();
@@ -86,8 +86,8 @@ namespace Tickets2
         {
             if (txtID_Search_Finalizados.Text.Length == 0)
             {
-                //Obtener todos los servicios
-                var consulta2 = dcDatos.sp_Get_ServiciosFinalizados(0, 0);
+                //Obtener todos los Servicio
+                var consulta2 = dcDatos.sp_Get_ServicioFinalizados(0, 0);
 
                 dgFinalizados.DataSource = consulta2;
                 dgFinalizados.DataBind();
@@ -102,7 +102,7 @@ namespace Tickets2
                     return;
                 }
 
-                var consulta2 = dcDatos.sp_Get_ServiciosFinalizados(ID_Search_Finalizados, 0);
+                var consulta2 = dcDatos.sp_Get_ServicioFinalizados(ID_Search_Finalizados, 0);
 
                 dgFinalizados.DataSource = consulta2;
                 dgFinalizados.DataBind();
@@ -115,7 +115,7 @@ namespace Tickets2
         {
             int ID_Search_Finalizados = 0;
             int.TryParse(txtID_Search_Finalizados.Text, out ID_Search_Finalizados);
-            var consulta3 = dcDatos.sp_Get_ServiciosFinalizados(ID_Search_Finalizados, 0);
+            var consulta3 = dcDatos.sp_Get_ServicioFinalizados(ID_Search_Finalizados, 0);
 
             dgFinalizados.PageIndex = e.NewPageIndex;
             dgFinalizados.DataSource = consulta3;

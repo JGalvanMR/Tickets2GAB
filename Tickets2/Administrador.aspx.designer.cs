@@ -159,13 +159,13 @@ namespace Tickets2
         protected global::System.Web.UI.WebControls.TextBox txtIdServicioResponsableSis;
 
         /// <summary>
-        /// Control cmbResponsableServicioSis.
+        /// Control cmbResponsableServiciois.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList cmbResponsableServicioSis;
+        protected global::System.Web.UI.WebControls.DropDownList cmbResponsableServiciois;
 
         /// <summary>
         /// Control datetimepicker4.
@@ -177,22 +177,22 @@ namespace Tickets2
         protected global::System.Web.UI.WebControls.TextBox datetimepicker4;
 
         /// <summary>
-        /// Control btnAsignarServicioSis.
+        /// Control btnAsignarServiciois.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnAsignarServicioSis;
+        protected global::System.Web.UI.WebControls.LinkButton btnAsignarServiciois;
 
         /// <summary>
-        /// Control txtIdServicioSis.
+        /// Control txtIdServiciois.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIdServicioSis;
+        protected global::System.Web.UI.WebControls.TextBox txtIdServiciois;
 
         /// <summary>
         /// Control txtComentarioSis.

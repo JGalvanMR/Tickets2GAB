@@ -62,9 +62,9 @@
                     </div>
                 </div>
                 <br/>
-                <h2>Servicios Solicitados</h2>
+                <h2>Servicio Solicitados</h2>
                 <asp:GridView runat ="server" ID="dgSolicitadosMan" CssClass="table table-bordered table-responsive table-hover table-striped"
-                    AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                    AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                     <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>                           
                     <Columns>
                         <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID" >
@@ -227,9 +227,9 @@
                 </div>
                 <!---->
                 <br />
-                <h2>Servicios Asignados a Mantenimiento </h2>
+                <h2>Servicio Asignados a Mantenimiento </h2>
                 <asp:GridView runat ="server" ID="dgAbiertosMan" CssClass="table table-bordered table-responsive table-hover table-striped"
-                    AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                    AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                     <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>                           
                     <Columns>
                         <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID" >

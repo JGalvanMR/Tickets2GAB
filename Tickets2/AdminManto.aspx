@@ -86,7 +86,7 @@
             </div>
             <br />
             <ul class="nav nav-tabs" id="tablas">
-                <li class="active"><a href="#man" data-toggle="tab">Servicios Mantenimiento <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
+                <li class="active"><a href="#man" data-toggle="tab">Servicio Mantenimiento <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
                 <li><a href="AdminManto.aspx" class="btn btn-success">Refrescar <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a></li>
                 <li>
                     <asp:LinkButton ID="btnSalir" runat="server" CssClass="btn btn-primary"
@@ -96,9 +96,9 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="man">
-                    <h3>Servicios Solicitados</h3>
+                    <h3>Servicio Solicitados</h3>
                     <asp:GridView runat="server" ID="dgSolicitadosMan" CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>
@@ -333,9 +333,9 @@
                         </div>
                     </div>
                     <hr />
-                    <h2>Servicios Asignados a Mantenimiento </h2>
+                    <h2>Servicio Asignados a Mantenimiento </h2>
                     <asp:GridView runat="server" ID="dgAbiertosMan" CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>
@@ -364,9 +364,9 @@
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
-                    <h2>Servicios Finalizados de Mantenimiento </h2>
+                    <h2>Servicio Finalizados de Mantenimiento </h2>
                     <asp:GridView runat="server" ID="dgFinalizadosMan" CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>

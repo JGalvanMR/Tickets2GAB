@@ -117,7 +117,7 @@
 					        </div>
                         </div>
                         <asp:GridView runat ="server" ID="dgSolicitados" CssClass="table table-bordered table-responsive table-hover table-striped"
-                            AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                            AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                             <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>                           
                             <Columns>
                                 <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID" >
@@ -206,24 +206,18 @@
 					        </div> 
                         </div>
                         <asp:GridView runat ="server" ID="dgAbiertos" CssClass="table table-bordered table-responsive table-hover table-striped"
-                            AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                            AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                             <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>                           
                             <Columns>
                                 <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID" >
                                 </asp:BoundField>                                
                                 <asp:BoundField HeaderText="Nombre" DataField="Nombre" >
                                 </asp:BoundField>
-                                <asp:BoundField HeaderText="Area" DataField="Area" >
-                                </asp:BoundField>
-                                <asp:BoundField HeaderText="Equipo" DataField="Equipo" >
-                                </asp:BoundField>
                                 <asp:BoundField HeaderText="Incidente" DataField="Incidente" >
                                 </asp:BoundField>
                                 <asp:BoundField HeaderText="Comentarios" DataField="Comentarios" >
                                 </asp:BoundField>
                                 <asp:BoundField HeaderText="Asignado a" DataField="Asignado_A" >
-                                </asp:BoundField>
-                                <asp:BoundField HeaderText="Responsable" DataField="Responsable" >
                                 </asp:BoundField>
                                 <asp:BoundField HeaderText="Fecha Ingreso" DataField="Fecha_Ingreso" >
                                 </asp:BoundField>
@@ -393,7 +387,7 @@
                             </div>
                         </div>
                         <asp:GridView runat ="server" ID="dgFinalizados" CssClass="table table-bordered table-responsive table-hover table-striped"
-                            AllowPaging="True" PageSize="10" AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true"
+                            AllowPaging="True" PageSize="10" AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true"
                             OnPageIndexChanging="dgFinalizados_PageIndexChanging">
                             <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>                           
                             <Columns>

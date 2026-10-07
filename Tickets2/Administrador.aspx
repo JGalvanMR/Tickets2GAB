@@ -292,7 +292,7 @@
                 <div class="update-progress-overlay">
                     <div class="update-progress-box">
                         <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
-                        <span>Cargando servicios asignados...</span>
+                        <span>Cargando Servicio asignados...</span>
                     </div>
                 </div>
             </ProgressTemplate>
@@ -304,7 +304,7 @@
                 <div class="update-progress-overlay">
                     <div class="update-progress-box">
                         <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>
-                        <span>Cargando servicios finalizados...</span>
+                        <span>Cargando Servicio finalizados...</span>
                     </div>
                 </div>
             </ProgressTemplate>
@@ -331,8 +331,8 @@
             </div>
             <br />
             <ul class="nav nav-tabs" id="tablas">
-                <li class="active"><a href="#sis" data-toggle="tab">Servicios Sistemas <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
-                <li><a href="#reg" data-toggle="tab">Registrar Usuarios <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+                <li class="active"><a href="#sis" data-toggle="tab">Servicio Sistemas <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a></li>
+                <li><a href="#reg" data-toggle="tab">Registrar Usuario <span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
                 <li><a href="Administrador.aspx" class="btn btn-success">Refrescar <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a></li>
                 <li>
                     <asp:LinkButton ID="btnSalir" runat="server" CssClass="btn btn-primary"
@@ -397,12 +397,12 @@
                     </center>
                 </div>
 
-                <!-- ==================== TAB: Servicios Sistemas ==================== -->
+                <!-- ==================== TAB: Servicio Sistemas ==================== -->
                 <div class="tab-pane fade in active" id="sis">
-                    <h3>Servicios Solicitados</h3>
+                    <h3>Servicio Solicitados</h3>
                     <asp:GridView runat="server" ID="dgSolicitados"
                         CssClass="table table-bordered table-responsive table-hover table-striped"
-                        AutoGenerateColumns="false" EmptyDataText="No hay servicios" ShowHeaderWhenEmpty="true">
+                        AutoGenerateColumns="false" EmptyDataText="No hay Servicio" ShowHeaderWhenEmpty="true">
                         <HeaderStyle BackColor="#4682B4" Font-Bold="True" ForeColor="Black"></HeaderStyle>
                         <Columns>
                             <asp:BoundField HeaderText="ID" DataField="ID" ItemStyle-CssClass="ID"></asp:BoundField>
@@ -536,7 +536,7 @@
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
                             <label>Responsable del servicio: </label>
-                            <asp:DropDownList ID="cmbResponsableServicioSis" runat="server" CssClass="form-control"></asp:DropDownList>
+                            <asp:DropDownList ID="cmbResponsableServiciois" runat="server" CssClass="form-control"></asp:DropDownList>
                         </div>
                         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
                             <label>Fecha estimada de finalización: </label>
@@ -544,8 +544,8 @@
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                             <br />
-                            <asp:LinkButton ID="btnAsignarServicioSis" runat="server" CssClass="btn btn-primary"
-                                Text="Guardar <span class='glyphicon glyphicon-floppy-disk'></span>" OnClick="btnAsignarServicioSis_Click" />
+                            <asp:LinkButton ID="btnAsignarServiciois" runat="server" CssClass="btn btn-primary"
+                                Text="Guardar <span class='glyphicon glyphicon-floppy-disk'></span>" OnClick="btnAsignarServiciois_Click" />
                         </div>
                     </div>
                     <hr />
@@ -553,7 +553,7 @@
                     <div class="row">
                         <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
                             <label>Id del Servicio: </label>
-                            <asp:TextBox runat="server" ID="txtIdServicioSis" CssClass="form-control" placeholder="Id del Servicio"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="txtIdServiciois" CssClass="form-control" placeholder="Id del Servicio"></asp:TextBox>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <label>Comentar: </label>
@@ -599,13 +599,13 @@
                         </div>
                     </div>
 
-                    <h2>Servicios Asignados a Sistemas</h2>
+                    <h2>Servicio Asignados a Sistemas</h2>
                     <asp:UpdatePanel ID="UpdatePanelAbiertos" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <asp:GridView runat="server" ID="dgAbiertosSis"
                                 CssClass="table table-bordered table-responsive table-hover table-striped"
                                 AutoGenerateColumns="false"
-                                EmptyDataText="No hay servicios"
+                                EmptyDataText="No hay Servicio"
                                 ShowHeaderWhenEmpty="true"
                                 AllowPaging="true"
                                 PageSize="5"
@@ -636,7 +636,7 @@
                     </asp:UpdatePanel>
 
                     <hr />
-                    <h2>Servicios Finalizados de Sistemas</h2>
+                    <h2>Servicio Finalizados de Sistemas</h2>
                     <asp:UpdatePanel ID="UpdatePanelFinalizados" runat="server" UpdateMode="Conditional">
                         <ContentTemplate>
                             <div class="card shadow-sm border-0" style="margin-bottom: 20px;">
@@ -646,9 +646,9 @@
                                         <div class="col-xs-12 col-sm-6">
                                             <h5 class="mb-1 fw-bold text-dark">
                                                 <span class="glyphicon glyphicon-ok-circle"></span>
-                                                Servicios Finalizados de Sistemas
+                                                Servicio Finalizados de Sistemas
                                             </h5>
-                                            <small class="text-muted">Consulta histórica de servicios concluidos</small>
+                                            <small class="text-muted">Consulta histórica de Servicio concluidos</small>
                                         </div>
                                         <div class="col-xs-12 col-sm-6">
                                             <div class="input-group input-group-sm" style="margin-top: 5px;">
@@ -668,7 +668,7 @@
                                             ID="dgFinalizadosxis"
                                             CssClass="table table-hover tabla-finalizados mb-0 table-striped"
                                             AutoGenerateColumns="false"
-                                            EmptyDataText="No hay servicios finalizados"
+                                            EmptyDataText="No hay Servicio finalizados"
                                             ShowHeaderWhenEmpty="true"
                                             GridLines="None"
                                             UseAccessibleHeader="true">
@@ -759,7 +759,7 @@
 
     <script type="text/javascript">
         // ============================================
-        // Paginación y búsqueda personalizada para Servicios Finalizados
+        // Paginación y búsqueda personalizada para Servicio Finalizados
         // ============================================
         var finalizados = {
             currentPage: 1,

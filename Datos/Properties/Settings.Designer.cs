@@ -66,5 +66,17 @@ namespace Datos.Properties {
                 return ((string)(this["Tickets2ConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=tcp:189.206.160.206,2352;Initial Catalog=Tickets2;Persist Security In" +
+            "fo=True;User ID=sa;Password=Gabira2026$;Encrypt=False;TrustServerCertificate=Tru" +
+            "e")]
+        public string Tickets2ConnectionString2 {
+            get {
+                return ((string)(this["Tickets2ConnectionString2"]));
+            }
+        }
     }
 }
